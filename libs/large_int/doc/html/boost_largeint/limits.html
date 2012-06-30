@@ -1,0 +1,118 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Large Integer Limits</title>
+<link rel="stylesheet" href="../../../../../doc/src/boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="../index.html" title="Boost.LargeInt">
+<link rel="up" href="../index.html" title="Boost.LargeInt">
+<link rel="prev" href="div.html" title="Large Integer Divide">
+<link rel="next" href="traits.html" title="Large Integer Traits">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr>
+<td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="../../../../../boost.png"></td>
+<td align="center"><a href="../../../../../index.html">Home</a></td>
+<td align="center"><a href="../../../../../libs/libraries.htm">Libraries</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
+<td align="center"><a href="../../../../../more/index.htm">More</a></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="div.html"><img src="../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="traits.html"><img src="../../../../../doc/src/images/next.png" alt="Next"></a>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="boost_largeint.limits"></a><a class="link" href="limits.html" title="Large Integer Limits">Large Integer Limits</a>
+</h2></div></div></div>
+<div class="toc"><dl><dt><span class="section"><a href="limits.html#boost_largeint.limits.usage_example">Usage Example</a></span></dt></dl></div>
+<p>
+      To support generic programming, Boost.LargeInt also provides a specialization
+      of the standard class '<code class="literal">std::numeric_limits</code>', for all <code class="literal">boost::large_int::large_int</code>
+      types. This specialization may be used in exactly the same manner as for the
+      built-in integral types.
+    </p>
+<p>
+</p>
+<pre class="programlisting"><span class="keyword">namespace</span> <span class="identifier">std</span>
+<span class="special">{</span>
+
+<span class="keyword">class</span> <span class="identifier">numeric_limits</span><span class="special">&lt;</span> <span class="special">::</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">large_int</span><span class="special">::</span><span class="identifier">large_int</span><span class="special">&lt;</span> <span class="comment">/*...*/</span> <span class="special">&gt;</span> <span class="special">&gt;</span>
+<span class="special">{</span>
+<span class="keyword">public</span><span class="special">:</span>
+    <span class="keyword">static</span> <span class="keyword">const</span> <span class="keyword">bool</span> <span class="identifier">is_specialized</span> <span class="special">=</span> <span class="keyword">true</span><span class="special">;</span>
+    <span class="keyword">static</span> <span class="keyword">const</span> <span class="keyword">int</span> <span class="identifier">digits</span> <span class="special">=</span> <span class="comment">/*...*/</span><span class="special">;</span>
+    <span class="keyword">static</span> <span class="keyword">const</span> <span class="keyword">int</span> <span class="identifier">digits10</span> <span class="special">=</span> <span class="comment">/*...*/</span><span class="special">;</span>
+    <span class="keyword">static</span> <span class="keyword">const</span> <span class="keyword">bool</span> <span class="identifier">is_signed</span> <span class="special">=</span> <span class="comment">/*...*/</span><span class="special">;</span>
+    <span class="keyword">static</span> <span class="keyword">const</span> <span class="keyword">bool</span> <span class="identifier">is_integer</span> <span class="special">=</span> <span class="keyword">true</span><span class="special">;</span>
+    <span class="keyword">static</span> <span class="keyword">const</span> <span class="keyword">bool</span> <span class="identifier">is_exact</span> <span class="special">=</span> <span class="keyword">true</span><span class="special">;</span>
+    <span class="keyword">static</span> <span class="keyword">const</span> <span class="keyword">int</span> <span class="identifier">radix</span> <span class="special">=</span> <span class="number">2</span><span class="special">;</span>
+
+    <span class="keyword">static</span> <span class="special">::</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">large_int</span><span class="special">::</span><span class="identifier">large_int</span><span class="special">&lt;</span> <span class="comment">/*...*/</span> <span class="special">&gt;</span> <span class="identifier">min</span><span class="special">()</span> <span class="keyword">throw</span><span class="special">();</span>
+    <span class="keyword">static</span> <span class="special">::</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">large_int</span><span class="special">::</span><span class="identifier">large_int</span><span class="special">&lt;</span> <span class="comment">/*...*/</span> <span class="special">&gt;</span> <span class="identifier">max</span><span class="special">()</span> <span class="keyword">throw</span><span class="special">();</span>
+
+    <span class="comment">// ...</span>
+<span class="special">};</span>
+
+<span class="special">}</span> <span class="comment">// namespace std</span>
+</pre>
+<p>
+    </p>
+<div class="note"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../../../../doc/src/images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+        Although the definition for <code class="literal">std::numeric_limits</code> has changed
+        between the C++98 and C++11 standards, Boost.LargeInt currently uses the
+        C++98 version of the class definition to improve portability.
+      </p></td></tr>
+</table></div>
+<div class="tip"><table border="0" summary="Tip">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Tip]" src="../../../../../doc/src/images/tip.png"></td>
+<th align="left">Tip</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+        Specializations for classes in namespace <code class="literal">std</code> are explicitly
+        allowed by the C++98 standard, section 17.4.3.1 ("Reserved names").
+      </p></td></tr>
+</table></div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="boost_largeint.limits.usage_example"></a><a class="link" href="limits.html#boost_largeint.limits.usage_example" title="Usage Example">Usage Example</a>
+</h3></div></div></div>
+<p>
+</p>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">iostream</span><span class="special">&gt;</span> <span class="comment">// For std::cout, std::endl</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">cstdint</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span> <span class="comment">// For uint64_t, int8_t</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">large_int</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span> <span class="comment">// For boost::large_int::large_int,</span>
+                               <span class="comment">//     std::numeric_limits&lt;large_int&gt;</span>
+<span class="keyword">void</span> <span class="identifier">example</span><span class="special">()</span>
+<span class="special">{</span>
+    <span class="comment">// Print the size, in bits, of a 72bit large_int</span>
+    <span class="keyword">typedef</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">large_int</span><span class="special">::</span><span class="identifier">large_int</span><span class="special">&lt;</span><span class="identifier">uint64_t</span><span class="special">,</span> <span class="identifier">int8_t</span><span class="special">&gt;</span> <span class="identifier">lint72_t</span><span class="special">;</span>
+    <span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="string">"lint72_t has "</span> <span class="special">&lt;&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">numeric_limits</span><span class="special">&lt;</span><span class="identifier">lint72_t</span><span class="special">&gt;::</span><span class="identifier">digits</span>
+              <span class="special">&lt;&lt;</span> <span class="string">" binary digits"</span> <span class="special">&lt;&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">endl</span><span class="special">;</span>
+<span class="special">}</span>
+</pre>
+<p>
+      </p>
+</div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2012 Michael J. Tryhorn<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="div.html"><img src="../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="traits.html"><img src="../../../../../doc/src/images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

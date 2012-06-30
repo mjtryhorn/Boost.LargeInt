@@ -1,0 +1,28 @@
+# Boost.LargeInt Library test Jamfile
+#
+# Copyright (c) 2012 Michael J. Tryhorn (mjtryhorn at gmail dot com)
+#
+# Distributed under the Boost Software License, Version 1.0.
+# (See accompanying file LICENSE_1_0.txt or copy at
+# http://www.boost.org/LICENSE_1_0.txt)
+#
+# See http://www.boost.org/ for latest version.
+#
+
+rule do-test ( name )
+{
+    return [ run $(name).cpp /boost/test//boost_unit_test_framework/<link>static ] ;
+}
+
+test-suite large_int
+    :
+        [ do-test large_int_test_limits ]
+        [ do-test large_int_test_traits ]
+        [ do-test large_int_test_cast ]
+        [ do-test large_int_test_div ]
+        [ do-test large_int_test_base ]
+        [ do-test large_int_test_utils ]
+        [ do-test large_int_test_io ]
+        [ do-test large_int_test_def ]
+        [ do-test large_int_test_version ]
+    ;

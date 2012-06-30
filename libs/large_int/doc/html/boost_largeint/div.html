@@ -1,0 +1,126 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Large Integer Divide</title>
+<link rel="stylesheet" href="../../../../../doc/src/boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="../index.html" title="Boost.LargeInt">
+<link rel="up" href="../index.html" title="Boost.LargeInt">
+<link rel="prev" href="cast.html" title="Large Integer Cast">
+<link rel="next" href="limits.html" title="Large Integer Limits">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr>
+<td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="../../../../../boost.png"></td>
+<td align="center"><a href="../../../../../index.html">Home</a></td>
+<td align="center"><a href="../../../../../libs/libraries.htm">Libraries</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
+<td align="center"><a href="../../../../../more/index.htm">More</a></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="cast.html"><img src="../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="limits.html"><img src="../../../../../doc/src/images/next.png" alt="Next"></a>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="boost_largeint.div"></a><a class="link" href="div.html" title="Large Integer Divide">Large Integer Divide</a>
+</h2></div></div></div>
+<div class="toc"><dl><dt><span class="section"><a href="div.html#boost_largeint.div.usage_example">Usage Example</a></span></dt></dl></div>
+<p>
+      In integer arithmetic, where both a division and a modulus of a pair of terms
+      are required we may combine them into a single call using the standard C/C++
+      functions: <code class="literal">std::div</code> or <code class="literal">std::ldiv</code>, and
+      their respective result types: <code class="literal">std::div_t</code> and <code class="literal">std::ldiv_t</code>.
+    </p>
+<p>
+      Boost.LargeInt also supports this behaviour, with the function template: <code class="literal">boost::large_int::div</code>,
+      and a class template to hold its result: <code class="literal">boost::large_int::large_int_div_t</code>.
+    </p>
+<p>
+</p>
+<pre class="programlisting"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+<span class="keyword">namespace</span> <span class="identifier">large_int</span> <span class="special">{</span>
+
+<span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">U</span><span class="special">&gt;</span> <span class="keyword">struct</span> <span class="identifier">large_int_div_t</span><span class="special">&lt;</span><span class="identifier">large_int</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">,</span> <span class="identifier">U</span><span class="special">&gt;</span> <span class="special">&gt;</span>
+<span class="special">{</span>
+    <span class="comment">// Values --</span>
+    <span class="identifier">large_int</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">,</span> <span class="identifier">U</span><span class="special">&gt;</span> <span class="identifier">quot</span><span class="special">;</span> <span class="comment">// The quotient</span>
+    <span class="identifier">large_int</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">,</span> <span class="identifier">U</span><span class="special">&gt;</span> <span class="identifier">rem</span><span class="special">;</span> <span class="comment">// The remainder</span>
+
+    <span class="comment">// Constructor --</span>
+    <span class="keyword">explicit</span> <span class="identifier">large_int_div_t</span><span class="special">(</span>
+        <span class="keyword">const</span> <span class="identifier">large_int</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">,</span> <span class="identifier">U</span><span class="special">&gt;&amp;</span> <span class="identifier">quot_in</span> <span class="special">=</span> <span class="identifier">large_int</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">,</span> <span class="identifier">U</span><span class="special">&gt;(),</span>
+        <span class="keyword">const</span> <span class="identifier">large_int</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">,</span> <span class="identifier">U</span><span class="special">&gt;&amp;</span> <span class="identifier">rem_in</span> <span class="special">=</span> <span class="identifier">large_int</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">,</span> <span class="identifier">U</span><span class="special">&gt;());</span>
+<span class="special">};</span>
+
+<span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">U</span><span class="special">&gt;</span> <span class="identifier">large_int_div_t</span><span class="special">&lt;</span><span class="identifier">large_int</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">,</span> <span class="identifier">U</span><span class="special">&gt;</span> <span class="special">&gt;</span> <span class="identifier">div</span><span class="special">(</span>
+    <span class="keyword">const</span> <span class="identifier">large_int</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">,</span><span class="identifier">U</span><span class="special">&gt;&amp;</span> <span class="identifier">numerator</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">large_int</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">,</span><span class="identifier">U</span><span class="special">&gt;&amp;</span> <span class="identifier">denominator</span><span class="special">);</span>
+
+<span class="special">}</span> <span class="comment">// namespace large_int</span>
+<span class="special">}</span> <span class="comment">// namespace boost</span>
+</pre>
+<p>
+    </p>
+<div class="tip"><table border="0" summary="Tip">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Tip]" src="../../../../../doc/src/images/tip.png"></td>
+<th align="left">Tip</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+        The <code class="literal">boost::large_int::large_int</code> operators <code class="literal">operator/</code>,
+        <code class="literal">operator/=</code>, <code class="literal">operator%</code> and <code class="literal">operator%=</code>
+        also use <code class="literal">boost::large_int::div</code> to perform their respective
+        division operations. So, where both division and modulus are required, <code class="literal">boost::large_int::div</code>
+        is highly recommended as its usage would reduce the cost in time by approximately
+        half.
+      </p></td></tr>
+</table></div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="boost_largeint.div.usage_example"></a><a class="link" href="div.html#boost_largeint.div.usage_example" title="Usage Example">Usage Example</a>
+</h3></div></div></div>
+<p>
+</p>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">iostream</span><span class="special">&gt;</span> <span class="comment">// For std::cout, std::endl</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">cstdint</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span> <span class="comment">// For uint64_t, int8_t</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">large_int</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span> <span class="comment">// For boost::large_int::large_int,</span>
+                               <span class="comment">//     boost::large_int::large_int_div_t,</span>
+                               <span class="comment">//     boost::large_int::div</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">large_int</span><span class="special">/</span><span class="identifier">io</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span> <span class="comment">// For streaming operator&lt;&lt;</span>
+
+<span class="keyword">void</span> <span class="identifier">example</span><span class="special">()</span>
+<span class="special">{</span>
+    <span class="comment">// Calculate a quotient and modulus together</span>
+    <span class="keyword">typedef</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">large_int</span><span class="special">::</span><span class="identifier">large_int</span><span class="special">&lt;</span><span class="identifier">uint64_t</span><span class="special">,</span> <span class="identifier">int8_t</span><span class="special">&gt;</span> <span class="identifier">lint72_t</span><span class="special">;</span>
+    <span class="keyword">typedef</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">large_int</span><span class="special">::</span><span class="identifier">large_int_div_t</span><span class="special">&lt;</span><span class="identifier">lint72_t</span><span class="special">&gt;</span> <span class="identifier">ldiv72_t</span><span class="special">;</span>
+
+    <span class="identifier">lint72_t</span> <span class="identifier">numerator</span><span class="special">(</span><span class="number">7</span><span class="special">);</span>
+    <span class="identifier">lint72_t</span> <span class="identifier">denominator</span><span class="special">(</span><span class="number">24</span><span class="special">);</span>
+    <span class="identifier">ldiv72_t</span> <span class="identifier">result</span><span class="special">(</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">large_int</span><span class="special">::</span><span class="identifier">div</span><span class="special">(</span><span class="identifier">numerator</span><span class="special">,</span> <span class="identifier">denominator</span><span class="special">));</span>
+
+    <span class="comment">// Print the result</span>
+    <span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="identifier">numerator</span> <span class="special">&lt;&lt;</span> <span class="char">'/'</span> <span class="special">&lt;&lt;</span> <span class="identifier">denominator</span> <span class="special">&lt;&lt;</span> <span class="string">"=="</span> <span class="special">&lt;&lt;</span> <span class="identifier">result</span><span class="special">.</span><span class="identifier">quot</span>
+              <span class="special">&lt;&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">endl</span><span class="special">;</span>
+    <span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="identifier">numerator</span> <span class="special">&lt;&lt;</span> <span class="char">'%'</span> <span class="special">&lt;&lt;</span> <span class="identifier">denominator</span> <span class="special">&lt;&lt;</span> <span class="string">"=="</span> <span class="special">&lt;&lt;</span> <span class="identifier">result</span><span class="special">.</span><span class="identifier">rem</span>
+              <span class="special">&lt;&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">endl</span><span class="special">;</span>
+<span class="special">}</span>
+</pre>
+<p>
+      </p>
+</div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2012 Michael J. Tryhorn<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="cast.html"><img src="../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="limits.html"><img src="../../../../../doc/src/images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

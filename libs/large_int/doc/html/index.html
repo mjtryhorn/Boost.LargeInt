@@ -1,0 +1,411 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Boost.LargeInt</title>
+<link rel="stylesheet" href="../../../../doc/src/boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="Boost.LargeInt">
+<link rel="next" href="boost_largeint/quickstart.html" title="Quick Start Guide for 128bit Mathematicians">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr>
+<td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="../../../../boost.png"></td>
+<td align="center"><a href="../../../../index.html">Home</a></td>
+<td align="center"><a href="../../../../libs/libraries.htm">Libraries</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
+<td align="center"><a href="../../../../more/index.htm">More</a></td>
+</tr></table>
+<hr>
+<div class="spirit-nav"><a accesskey="n" href="boost_largeint/quickstart.html"><img src="../../../../doc/src/images/next.png" alt="Next"></a></div>
+<div class="article">
+<div class="titlepage">
+<div>
+<div><h2 class="title">
+<a name="boost_largeint"></a>Boost.LargeInt</h2></div>
+<div><div class="authorgroup"><div class="author"><h3 class="author">
+<span class="firstname">Michael</span> <span class="surname">Tryhorn</span>
+</h3></div></div></div>
+<div><p class="copyright">Copyright &#169; 2012 Michael J. Tryhorn</p></div>
+<div><div class="legalnotice">
+<a name="boost_largeint.legal"></a><p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></div>
+</div>
+<hr>
+</div>
+<div class="toc">
+<p><b>Table of Contents</b></p>
+<dl>
+<dt><span class="section"><a href="index.html#boost_largeint.overview">Overview</a></span></dt>
+<dt><span class="section"><a href="boost_largeint/quickstart.html">Quick Start Guide for 128bit
+    Mathematicians</a></span></dt>
+<dt><span class="section"><a href="boost_largeint/base.html">The Large Integer Object</a></span></dt>
+<dt><span class="section"><a href="boost_largeint/cast.html">Large Integer Cast</a></span></dt>
+<dt><span class="section"><a href="boost_largeint/div.html">Large Integer Divide</a></span></dt>
+<dt><span class="section"><a href="boost_largeint/limits.html">Large Integer Limits</a></span></dt>
+<dt><span class="section"><a href="boost_largeint/traits.html">Large Integer Traits</a></span></dt>
+<dt><span class="section"><a href="boost_largeint/utils.html">Large Integer Utils</a></span></dt>
+<dt><span class="section"><a href="boost_largeint/def.html">Large Integer Defaults</a></span></dt>
+<dt><span class="section"><a href="boost_largeint/io.html">Large Integer I/O</a></span></dt>
+<dt><span class="section"><a href="boost_largeint/version.html">Large Integer Version</a></span></dt>
+</dl>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="boost_largeint.overview"></a><a class="link" href="index.html#boost_largeint.overview" title="Overview">Overview</a>
+</h2></div></div></div>
+<div class="toc"><dl><dt><span class="section"><a href="index.html#boost_largeint.overview.caveat_emptor">Caveat Emptor</a></span></dt></dl></div>
+<p>
+      Boost.LargeInt is a platform-independent C++ library for the definition and
+      transparent manipulation of integers of arbitrary size. If you are looking
+      for 128bit integer support only, feel free to skip to the <a class="link" href="boost_largeint/quickstart.html" title="Quick Start Guide for 128bit Mathematicians">quick
+      start guide</a>.
+    </p>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+              <p>
+                Component
+              </p>
+            </th>
+<th>
+              <p>
+                Header
+              </p>
+            </th>
+<th>
+              <p>
+                Purpose
+              </p>
+            </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+              <p>
+                Forward Declarations
+              </p>
+            </td>
+<td>
+              <p>
+                <code class="literal"><a href="../../../../boost/large_int/fwd.hpp" target="_top">&lt;boost/large_int/fwd.hpp&gt;</a></code>
+              </p>
+            </td>
+<td>
+              <p>
+                Forward declarations of classes, class templates, functions and operators
+                - for use when only an identifier is needed.
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                Full declarations
+              </p>
+            </td>
+<td>
+              <p>
+                <code class="literal"><a href="../../../../boost/large_int.hpp" target="_top">&lt;boost/large_int.hpp&gt;</a></code>
+              </p>
+            </td>
+<td>
+              <p>
+                All large_int declarations and their implementation <span class="bold"><strong>except
+                for</strong></span> the implementations for the streaming operators:
+                <code class="literal">&lt;&lt;</code> and <code class="literal">&gt;&gt;</code>.
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                <a class="link" href="boost_largeint/base.html" title="The Large Integer Object">Large Integer</a>
+              </p>
+            </td>
+<td>
+              <p>
+                <code class="literal"><a href="../../../../boost/large_int/base.hpp" target="_top">&lt;boost/large_int/base.hpp&gt;</a></code>
+              </p>
+            </td>
+<td>
+              <p>
+                The <code class="literal">boost::large_int::large_int</code> class declaration
+                itself, including a complete set of constructors (with implementation)
+                and operator forward declarations.
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                <a class="link" href="boost_largeint/cast.html" title="Large Integer Cast">Large Integer Cast</a>
+              </p>
+            </td>
+<td>
+              <p>
+                <code class="literal"><a href="../../../../boost/large_int/cast.hpp" target="_top">&lt;boost/large_int/cast.hpp&gt;</a></code>
+              </p>
+            </td>
+<td>
+              <p>
+                The custom cast operator <code class="literal">boost::large_int::large_int_cast</code>,
+                for casting to, from and between <code class="literal">large_int</code> values.
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                <a class="link" href="boost_largeint/div.html" title="Large Integer Divide">Large Integer Divide</a>
+              </p>
+            </td>
+<td>
+              <p>
+                <code class="literal"><a href="../../../../boost/large_int/div.hpp" target="_top">&lt;boost/large_int/div.hpp&gt;</a></code>
+              </p>
+            </td>
+<td>
+              <p>
+                The standard arithmetic function <code class="literal">boost::large_int::div</code>
+                and associated result type <code class="literal">boost::large_int::large_int_div_t</code>,
+                to be used where both division and modulus of a large_int value are
+                required.
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                <a class="link" href="boost_largeint/limits.html" title="Large Integer Limits">Large Integer Limits</a>
+              </p>
+            </td>
+<td>
+              <p>
+                <code class="literal"><a href="../../../../boost/large_int/limits.hpp" target="_top">&lt;boost/large_int/limits.hpp&gt;</a></code>
+              </p>
+            </td>
+<td>
+              <p>
+                A partial-specialisation of class template <code class="literal">std::numeric_limits</code>
+                for all <code class="literal">boost::large_int::large_int</code> types.
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                <a class="link" href="boost_largeint/traits.html" title="Large Integer Traits">Large Integer Traits</a>
+              </p>
+            </td>
+<td>
+              <p>
+                <code class="literal"><a href="../../../../boost/large_int/traits.hpp" target="_top">&lt;boost/large_int/traits.hpp&gt;</a></code>
+              </p>
+            </td>
+<td>
+              <p>
+                Class template <code class="literal">boost::large_int::large_int_traits</code>,
+                including static members for the detection, inspection and comparison
+                of <code class="literal">large_int</code> values.
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                <a class="link" href="boost_largeint/utils.html" title="Large Integer Utils">Large Integer Utils</a>
+              </p>
+            </td>
+<td>
+              <p>
+                <code class="literal"><a href="../../../../boost/large_int/utils.hpp" target="_top">&lt;boost/large_int/utils.hpp&gt;</a></code>
+              </p>
+            </td>
+<td>
+              <p>
+                Utility function templates, including <code class="literal">boost::large_int::abs</code>
+                and <code class="literal">boost::large_int::make_large_int</code>.
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                <a class="link" href="boost_largeint/def.html" title="Large Integer Defaults">Large Integer Defaults</a>
+              </p>
+            </td>
+<td>
+              <p>
+                <code class="literal"><a href="../../../../boost/large_int/def.hpp" target="_top">&lt;boost/large_int/def.hpp&gt;</a></code>
+              </p>
+            </td>
+<td>
+              <p>
+                Standard <code class="literal">boost::large_int::large_int</code> based integral
+                types.
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                <a class="link" href="boost_largeint/io.html" title="Large Integer I/O">Large Integer I/O</a>
+              </p>
+            </td>
+<td>
+              <p>
+                <code class="literal"><a href="../../../../boost/large_int/io.hpp" target="_top">&lt;boost/large_int/io.hpp&gt;</a></code>
+              </p>
+            </td>
+<td>
+              <p>
+                Implementations for streaming operators <code class="literal">&lt;&lt;</code>
+                and <code class="literal">&gt;&gt;</code> for all <code class="literal">boost::large_int::large_int</code>
+                based integral types.
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                <a class="link" href="boost_largeint/version.html" title="Large Integer Version">Large Integer Library Version</a>
+              </p>
+            </td>
+<td>
+              <p>
+                <code class="literal"><a href="../../../../boost/large_int/version.hpp" target="_top">&lt;boost/large_int/version.hpp&gt;</a></code>
+              </p>
+            </td>
+<td>
+              <p>
+                The version of the Boost.LargeInt library, as a defined value.
+              </p>
+            </td>
+</tr>
+</tbody>
+</table></div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="boost_largeint.overview.caveat_emptor"></a><a class="link" href="index.html#boost_largeint.overview.caveat_emptor" title="Caveat Emptor">Caveat Emptor</a>
+</h3></div></div></div>
+<p>
+        This library makes extensive use of template-metaprogramming, and as such
+        places a heavy demand upon the C++ compiler. Although every effort has been
+        made to retain code-portability, not all compilers will be able to support
+        code which itself relies upon Boost.LargeInt. However, this library has been
+        tested with the following compilers:
+      </p>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                <p>
+                  Compiler
+                </p>
+              </th>
+<th>
+                <p>
+                  Versions
+                </p>
+              </th>
+<th>
+                <p>
+                  Library Status
+                </p>
+              </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+                <p>
+                  GCC
+                </p>
+              </td>
+<td>
+                <p>
+                  4.6.1, 4.6.2
+                </p>
+              </td>
+<td>
+                <p>
+                  Fully functional
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  Borland C++
+                </p>
+              </td>
+<td>
+                <p>
+                  5.6.4
+                </p>
+              </td>
+<td>
+                <p>
+                  Fully functional
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  Microsoft Visual C++
+                </p>
+              </td>
+<td>
+                <p>
+                  2010
+                </p>
+              </td>
+<td>
+                <p>
+                  Fully functional
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  Microsoft Visual C++
+                </p>
+              </td>
+<td>
+                <p>
+                  6
+                </p>
+              </td>
+<td>
+                <p>
+                  <span class="bold"><strong>Non-functional</strong></span>
+                </p>
+              </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"><p><small>Last revised: June 30, 2012 at 10:14:38 GMT</small></p></td>
+<td align="right"><div class="copyright-footer"></div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav"><a accesskey="n" href="boost_largeint/quickstart.html"><img src="../../../../doc/src/images/next.png" alt="Next"></a></div>
+</body>
+</html>

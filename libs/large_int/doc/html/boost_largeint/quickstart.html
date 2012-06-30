@@ -1,0 +1,186 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Quick Start Guide for 128bit Mathematicians</title>
+<link rel="stylesheet" href="../../../../../doc/src/boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="../index.html" title="Boost.LargeInt">
+<link rel="up" href="../index.html" title="Boost.LargeInt">
+<link rel="prev" href="../index.html" title="Boost.LargeInt">
+<link rel="next" href="base.html" title="The Large Integer Object">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr>
+<td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="../../../../../boost.png"></td>
+<td align="center"><a href="../../../../../index.html">Home</a></td>
+<td align="center"><a href="../../../../../libs/libraries.htm">Libraries</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
+<td align="center"><a href="../../../../../more/index.htm">More</a></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="../index.html"><img src="../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="base.html"><img src="../../../../../doc/src/images/next.png" alt="Next"></a>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="boost_largeint.quickstart"></a><a class="link" href="quickstart.html" title="Quick Start Guide for 128bit Mathematicians">Quick Start Guide for 128bit
+    Mathematicians</a>
+</h2></div></div></div>
+<p>
+      The Boost.LargeInt library was initially designed solely to provide a simple
+      means to perform 128bit integral mathematics where native compiler support
+      is unavailable. If this is all you require, a subset of the Boost.LargeInt
+      functionality is all that must be learnt.
+    </p>
+<p>
+      128bit integral mathematics is commonly required where the result must be calculated
+      of the multiplication of two 64bit signed or unsigned lesser values. Either
+      we restrict the range of the input values - for example by throwing an exception
+      if their combination would overflow 64bits - or we assume that overflow will
+      never occur. For example:
+    </p>
+<p>
+</p>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">stdexcept</span><span class="special">&gt;</span> <span class="comment">// For std::range_error</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">cstdint</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span> <span class="comment">// For uint64_t</span>
+
+<span class="identifier">uint64_t</span> <span class="identifier">do_square</span><span class="special">(</span><span class="identifier">uint64_t</span> <span class="identifier">x</span><span class="special">)</span>
+<span class="special">{</span>
+    <span class="comment">// Ensure that the calculation will not overflow</span>
+    <span class="keyword">const</span> <span class="identifier">uint64_t</span> <span class="identifier">sqrt_uint64_max</span><span class="special">(</span><span class="number">4294967295</span><span class="special">);</span> <span class="comment">// sqrt(2^64)-1</span>
+    <span class="keyword">if</span><span class="special">(</span> <span class="identifier">x</span> <span class="special">&gt;</span> <span class="identifier">sqrt_uint64_max</span> <span class="special">)</span>
+    <span class="special">{</span>
+        <span class="comment">// Throw an exception rather than produce an incorrect result</span>
+        <span class="keyword">throw</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">range_error</span><span class="special">(</span><span class="string">"Overflow in do_square"</span><span class="special">);</span>
+    <span class="special">}</span>
+    <span class="keyword">return</span><span class="special">(</span> <span class="identifier">x</span> <span class="special">*</span> <span class="identifier">x</span> <span class="special">);</span>
+<span class="special">}</span>
+</pre>
+<p>
+    </p>
+<p>
+      With Boost.LargeInt we can be sure that it will never occur. By promoting the
+      input to 128bit before calculating its square, we could calculate the square
+      of any integer in the range: [0...2<sup>64</sup>-1]. Enter <code class="literal">boost::large_int::luint128_t</code>:
+    </p>
+<p>
+</p>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">cstdint</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span> <span class="comment">// For uint64_t</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">large_int</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span> <span class="comment">// For boost::large_int::luint128_t</span>
+
+<span class="identifier">boost</span><span class="special">::</span><span class="identifier">large_int</span><span class="special">::</span><span class="identifier">luint128_t</span> <span class="identifier">do_square</span><span class="special">(</span><span class="identifier">uint64_t</span> <span class="identifier">x</span><span class="special">)</span>
+<span class="special">{</span>
+    <span class="comment">// Promote the input to 128bit for multiplication</span>
+    <span class="keyword">return</span><span class="special">(</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">large_int</span><span class="special">::</span><span class="identifier">luint128_t</span><span class="special">(</span><span class="identifier">x</span><span class="special">)</span>
+          <span class="special">*</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">large_int</span><span class="special">::</span><span class="identifier">luint128_t</span><span class="special">(</span><span class="identifier">x</span><span class="special">)</span> <span class="special">);</span>
+<span class="special">}</span>
+</pre>
+<p>
+    </p>
+<p>
+      What about when we need to convert back from a 128bit integer to 64bit (or
+      less)? The standard <code class="literal">static_cast</code> operator cannot be used.
+      Instead, Boost.LargeInt provides its own, <code class="literal">static_cast</code>-like
+      operator, <code class="literal">boost::large_int::large_int_cast</code>:
+    </p>
+<p>
+</p>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">cstdint</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span> <span class="comment">// For uint64_t</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">large_int</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span> <span class="comment">// For boost::large_int::luint128_t</span>
+                               <span class="comment">//     boost::large_int::large_int_cast</span>
+<span class="identifier">uint64_t</span> <span class="identifier">do_sqrt</span><span class="special">(</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">large_int</span><span class="special">::</span><span class="identifier">luint128_t</span> <span class="identifier">x</span><span class="special">)</span>
+<span class="special">{</span>
+    <span class="comment">// [-- Perform the square root calculation --]</span>
+
+    <span class="comment">// 'x' is now in the range [0...(2^64)-1],</span>
+    <span class="comment">// and may be safely cast to a 64bit result</span>
+    <span class="keyword">return</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">large_int</span><span class="special">::</span><span class="identifier">large_int_cast</span><span class="special">&lt;</span><span class="identifier">uint64_t</span><span class="special">&gt;(</span><span class="identifier">x</span><span class="special">);</span>
+<span class="special">}</span>
+</pre>
+<p>
+    </p>
+<div class="note"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../../../../doc/src/images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+        <code class="literal">boost::large_int::large_int_cast</code> supports the conversion
+        to, from, and between <code class="literal">large_int</code> values. For fully-generic
+        programming, it even supports conversion between two non-<code class="literal">large_int</code>
+        values. Thus, in the context of Boost.LargeInt, it may be thought of as a
+        replacement for <code class="literal">static_cast</code>.
+      </p></td></tr>
+</table></div>
+<p>
+      Now, what if we want to write a simple application to take in a 64bit value,
+      find its square, then echo that square back to the user? Simple:
+    </p>
+<p>
+</p>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">cstdlib</span><span class="special">&gt;</span> <span class="comment">// For EXIT_SUCCESS, EXIT_FAILURE</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">iostream</span><span class="special">&gt;</span> <span class="comment">// For std::cin, std::cout, std::cerr,</span>
+                    <span class="comment">//     std::flush, std::endl</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">cstdint</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span> <span class="comment">// For int64_t</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">large_int</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span> <span class="comment">// For boost::large_int::lint128_t</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">large_int</span><span class="special">/</span><span class="identifier">io</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span> <span class="comment">// For streaming operators &lt;&lt; and &gt;&gt;</span>
+
+<span class="identifier">boost</span><span class="special">::</span><span class="identifier">large_int</span><span class="special">::</span><span class="identifier">luint128_t</span> <span class="identifier">do_square</span><span class="special">(</span><span class="identifier">uint64_t</span> <span class="identifier">x</span><span class="special">)</span>
+<span class="special">{</span>
+    <span class="comment">// Promote the input to 128bit for multiplication</span>
+    <span class="keyword">return</span><span class="special">(</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">large_int</span><span class="special">::</span><span class="identifier">luint128_t</span><span class="special">(</span><span class="identifier">x</span><span class="special">)</span>
+          <span class="special">*</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">large_int</span><span class="special">::</span><span class="identifier">luint128_t</span><span class="special">(</span><span class="identifier">x</span><span class="special">)</span> <span class="special">);</span>
+<span class="special">}</span>
+
+<span class="keyword">int</span> <span class="identifier">main</span><span class="special">()</span>
+<span class="special">{</span>
+    <span class="identifier">int64_t</span> <span class="identifier">val</span><span class="special">;</span>
+    <span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="string">"Enter an integer: "</span> <span class="special">&lt;&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">flush</span><span class="special">;</span>
+    <span class="keyword">if</span><span class="special">(</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">cin</span> <span class="special">&gt;&gt;</span> <span class="identifier">val</span> <span class="special">)</span>
+    <span class="special">{</span>
+        <span class="comment">// Square and echo the integer</span>
+        <span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="string">"The square of "</span> <span class="special">&lt;&lt;</span> <span class="identifier">val</span>
+                  <span class="special">&lt;&lt;</span> <span class="string">" is "</span> <span class="special">&lt;&lt;</span> <span class="identifier">do_square</span><span class="special">(</span><span class="identifier">val</span><span class="special">)</span>
+                  <span class="special">&lt;&lt;</span> <span class="char">'.'</span> <span class="special">&lt;&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">endl</span><span class="special">;</span>
+        <span class="keyword">return</span> <span class="identifier">EXIT_SUCCESS</span><span class="special">;</span>
+    <span class="special">}</span>
+    <span class="keyword">else</span>
+    <span class="special">{</span>
+        <span class="comment">// Bad input</span>
+        <span class="identifier">std</span><span class="special">::</span><span class="identifier">cerr</span> <span class="special">&lt;&lt;</span> <span class="string">"Not an integer!"</span> <span class="special">&lt;&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">endl</span><span class="special">;</span>
+        <span class="keyword">return</span> <span class="identifier">EXIT_FAILURE</span><span class="special">;</span>
+    <span class="special">}</span>
+<span class="special">}</span>
+</pre>
+<p>
+    </p>
+<div class="warning"><table border="0" summary="Warning">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Warning]" src="../../../../../doc/src/images/warning.png"></td>
+<th align="left">Warning</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+        Where streaming input or output of a <code class="literal">boost::large_int::large_int</code>
+        value is required, the I/O specific header must be explicitly included:
+        <code class="literal">#include &lt;boost/large_int/io.hpp&gt;</code>.
+      </p></td></tr>
+</table></div>
+<p>
+      This covers the basics. If you require more, please read on.
+    </p>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2012 Michael J. Tryhorn<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="../index.html"><img src="../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="base.html"><img src="../../../../../doc/src/images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

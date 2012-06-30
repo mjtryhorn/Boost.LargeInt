@@ -1,0 +1,141 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Large Integer Cast</title>
+<link rel="stylesheet" href="../../../../../doc/src/boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="../index.html" title="Boost.LargeInt">
+<link rel="up" href="../index.html" title="Boost.LargeInt">
+<link rel="prev" href="base.html" title="The Large Integer Object">
+<link rel="next" href="div.html" title="Large Integer Divide">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr>
+<td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="../../../../../boost.png"></td>
+<td align="center"><a href="../../../../../index.html">Home</a></td>
+<td align="center"><a href="../../../../../libs/libraries.htm">Libraries</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
+<td align="center"><a href="../../../../../more/index.htm">More</a></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="base.html"><img src="../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="div.html"><img src="../../../../../doc/src/images/next.png" alt="Next"></a>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="boost_largeint.cast"></a><a class="link" href="cast.html" title="Large Integer Cast">Large Integer Cast</a>
+</h2></div></div></div>
+<p>
+      For most common situations, any <code class="literal">boost::large_int::large_int</code>
+      based type may be used as if it were a native equivalent. However, where a
+      large_int value must be converted to another native or non-native type, the
+      standard cast operators cannot be used. This is due to the fact that the standard
+      casting operators cannot be overloaded and is a property of the C++ language
+      itself.
+    </p>
+<p>
+      However, we can easily work around this by defining our own cast operator:
+      <code class="literal">boost::large_int::large_int_cast</code>. This custom cast is equivalent
+      to (and may be used in place of) C++'s built-in <code class="literal">static_cast</code>.
+    </p>
+<p>
+</p>
+<pre class="programlisting"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+<span class="keyword">namespace</span> <span class="identifier">large_int</span> <span class="special">{</span>
+
+<span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">C</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">T</span><span class="special">&gt;</span> <span class="identifier">C</span> <span class="identifier">large_int_cast</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">T</span><span class="special">&amp;</span> <span class="identifier">val</span><span class="special">);</span>
+
+<span class="special">}</span> <span class="comment">// namespace large_int</span>
+<span class="special">}</span> <span class="comment">// namespace boost</span>
+</pre>
+<p>
+    </p>
+<div class="tip"><table border="0" summary="Tip">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Tip]" src="../../../../../doc/src/images/tip.png"></td>
+<th align="left">Tip</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+        Although we cannot overload the <code class="literal">static_cast</code> operator directly,
+        it is possible to add casting operations to classes in the form of '<code class="literal">operator
+        &lt;TYPENAME&gt;();</code>'. However, this also implies that values of
+        the source type may be <span class="emphasis"><em>implicitly-cast</em></span> to the destination,
+        and is therefore not an exact match to the explicit nature of <code class="literal">static_cast</code>.
+      </p></td></tr>
+</table></div>
+<p>
+      Wherever a value must be converted either to or from a <code class="literal">boost::large_int::large_int</code>
+      based type (or templatized type which <span class="emphasis"><em>may or may not be</em></span>
+      a <code class="literal">boost::large_int::large_int</code>), this conversion may be achieved
+      via an instruction of the form:
+    </p>
+<p>
+</p>
+<pre class="programlisting"><span class="comment">// Cast the integer 'value' to type 'C'</span>
+<span class="identifier">C</span> <span class="identifier">result</span> <span class="special">=</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">large_int</span><span class="special">::</span><span class="identifier">large_int_cast</span><span class="special">&lt;</span><span class="identifier">C</span><span class="special">&gt;(</span><span class="identifier">value</span><span class="special">);</span>
+</pre>
+<p>
+    </p>
+<p>
+      Where '<span class="bold"><strong><code class="literal">C</code></strong></span>' is the desired
+      destination type.
+    </p>
+<p>
+      With <code class="literal">boost::large_int::large_int_cast</code> in hand, we may now
+      re-write our <a class="link" href="base.html#overview_final_example">original disk usage example</a>
+      for 64bit support, thus:
+    </p>
+<p>
+</p>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">cstdint</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span> <span class="comment">// For uint64_t, int8_t</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">large_int</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span> <span class="comment">// For large_int, large_int_cast</span>
+
+<span class="keyword">int</span> <span class="identifier">disk_used_to_percent</span><span class="special">(</span><span class="identifier">uint64_t</span> <span class="identifier">bytes_used</span><span class="special">,</span> <span class="identifier">uint64_t</span> <span class="identifier">bytes_total</span><span class="special">)</span>
+<span class="special">{</span>
+    <span class="comment">// Perform the calculation using 72bit values, which is large</span>
+    <span class="comment">// enough to hold ((std::numeric_limits&lt;uint64_t&gt;::max)() * 100).</span>
+    <span class="keyword">typedef</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">large_int</span><span class="special">::</span><span class="identifier">large_int</span><span class="special">&lt;</span><span class="identifier">uint64_t</span><span class="special">,</span> <span class="identifier">int8_t</span><span class="special">&gt;</span> <span class="identifier">lint72_t</span><span class="special">;</span>
+    <span class="keyword">return</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">large_int</span><span class="special">::</span><span class="identifier">large_int_cast</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">&gt;(</span>
+        <span class="special">(</span><span class="identifier">lint72_t</span><span class="special">(</span><span class="identifier">bytes_used</span><span class="special">)</span> <span class="special">*</span> <span class="number">100</span><span class="special">)</span> <span class="special">/</span> <span class="identifier">bytes_total</span><span class="special">);</span>
+<span class="special">}</span>
+</pre>
+<p>
+    </p>
+<p>
+      Unlike the built-in cast operators we may, if we prefer, be completely explicit
+      and specify the source type as a second template argument, after '<span class="bold"><strong><code class="literal">C</code></strong></span>':
+    </p>
+<p>
+</p>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">cstdint</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span> <span class="comment">// For uint64_t, int8_t</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">large_int</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span> <span class="comment">// For large_int, large_int_cast</span>
+
+<span class="keyword">int</span> <span class="identifier">disk_used_to_percent</span><span class="special">(</span><span class="identifier">uint64_t</span> <span class="identifier">bytes_used</span><span class="special">,</span> <span class="identifier">uint64_t</span> <span class="identifier">bytes_total</span><span class="special">)</span>
+<span class="special">{</span>
+    <span class="comment">// Perform the usage calculating, specifying all</span>
+    <span class="comment">// source and destination integer types explicitly</span>
+    <span class="keyword">typedef</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">large_int</span><span class="special">::</span><span class="identifier">large_int</span><span class="special">&lt;</span><span class="identifier">uint64_t</span><span class="special">,</span> <span class="identifier">int8_t</span><span class="special">&gt;</span> <span class="identifier">lint72_t</span><span class="special">;</span>
+    <span class="keyword">using</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">large_int</span><span class="special">::</span><span class="identifier">large_int_cast</span><span class="special">;</span>
+    <span class="keyword">return</span> <span class="identifier">large_int_cast</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">,</span> <span class="identifier">lint72_t</span><span class="special">&gt;(</span>
+          <span class="special">(</span><span class="identifier">large_int_cast</span><span class="special">&lt;</span><span class="identifier">lint72_t</span><span class="special">,</span> <span class="keyword">int</span><span class="special">&gt;(</span><span class="identifier">bytes_used</span><span class="special">)</span> <span class="special">*</span> <span class="number">100</span><span class="special">)</span>
+        <span class="special">/</span> <span class="identifier">large_int_cast</span><span class="special">&lt;</span><span class="identifier">lint72_t</span><span class="special">,</span> <span class="keyword">int</span><span class="special">&gt;(</span><span class="identifier">bytes_total</span><span class="special">));</span>
+<span class="special">}</span>
+</pre>
+<p>
+    </p>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2012 Michael J. Tryhorn<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="base.html"><img src="../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="div.html"><img src="../../../../../doc/src/images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

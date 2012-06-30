@@ -1,0 +1,202 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Large Integer Traits</title>
+<link rel="stylesheet" href="../../../../../doc/src/boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="../index.html" title="Boost.LargeInt">
+<link rel="up" href="../index.html" title="Boost.LargeInt">
+<link rel="prev" href="limits.html" title="Large Integer Limits">
+<link rel="next" href="utils.html" title="Large Integer Utils">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr>
+<td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="../../../../../boost.png"></td>
+<td align="center"><a href="../../../../../index.html">Home</a></td>
+<td align="center"><a href="../../../../../libs/libraries.htm">Libraries</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
+<td align="center"><a href="../../../../../more/index.htm">More</a></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="limits.html"><img src="../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="utils.html"><img src="../../../../../doc/src/images/next.png" alt="Next"></a>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="boost_largeint.traits"></a><a class="link" href="traits.html" title="Large Integer Traits">Large Integer Traits</a>
+</h2></div></div></div>
+<div class="toc"><dl><dt><span class="section"><a href="traits.html#boost_largeint.traits.usage_example">Usage Example</a></span></dt></dl></div>
+<p>
+      To support generic programming, Boost.LargeInt also defines the class template
+      <code class="literal">boost::large_int::large_int_traits</code>. This is fully defined
+      for all <code class="literal">large_int</code> types.
+    </p>
+<p>
+</p>
+<pre class="programlisting"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+<span class="keyword">namespace</span> <span class="identifier">large_int</span> <span class="special">{</span>
+
+<span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">&gt;</span> <span class="keyword">struct</span> <span class="identifier">large_int_traits</span>
+<span class="special">{</span>
+<span class="keyword">public</span><span class="special">:</span>
+    <span class="comment">// Types --</span>
+    <span class="keyword">typedef</span> <span class="comment">/*...*/</span> <span class="identifier">low_part_type</span><span class="special">;</span>
+    <span class="keyword">typedef</span> <span class="comment">/*...*/</span> <span class="identifier">high_part_type</span><span class="special">;</span>
+
+    <span class="comment">// Constants --</span>
+    <span class="keyword">static</span> <span class="keyword">const</span> <span class="keyword">bool</span> <span class="identifier">is_large_int</span> <span class="special">=</span> <span class="keyword">true</span><span class="special">;</span>
+    <span class="keyword">static</span> <span class="keyword">const</span> <span class="keyword">int</span> <span class="identifier">low_bits</span> <span class="special">=</span> <span class="comment">/*...*/</span><span class="special">;</span>
+    <span class="keyword">static</span> <span class="keyword">const</span> <span class="keyword">int</span> <span class="identifier">high_bits</span> <span class="special">=</span> <span class="comment">/*...*/</span><span class="special">;</span>
+    <span class="keyword">static</span> <span class="keyword">const</span> <span class="keyword">int</span> <span class="identifier">size_bits</span> <span class="special">=</span> <span class="comment">/*...*/</span><span class="special">;</span>
+
+    <span class="comment">// Utilities --</span>
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T2</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">U2</span><span class="special">&gt;</span>
+    <span class="keyword">static</span> <span class="keyword">bool</span> <span class="identifier">lt</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">large_int</span><span class="special">&lt;</span> <span class="comment">/*...*/</span> <span class="special">&gt;&amp;</span> <span class="identifier">lhs</span><span class="special">,</span>
+                   <span class="keyword">const</span> <span class="identifier">large_int</span><span class="special">&lt;</span> <span class="comment">/*...*/</span> <span class="special">&gt;&amp;</span> <span class="identifier">rhs</span><span class="special">);</span>
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T2</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">U2</span><span class="special">&gt;</span>
+    <span class="keyword">static</span> <span class="keyword">bool</span> <span class="identifier">eq</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">large_int</span><span class="special">&lt;</span> <span class="comment">/*...*/</span> <span class="special">&gt;&amp;</span> <span class="identifier">lhs</span><span class="special">,</span>
+                   <span class="keyword">const</span> <span class="identifier">large_int</span><span class="special">&lt;</span> <span class="comment">/*...*/</span> <span class="special">&gt;&amp;</span> <span class="identifier">rhs</span><span class="special">);</span>
+    <span class="keyword">static</span> <span class="keyword">bool</span> <span class="identifier">lt_literal</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">large_int</span><span class="special">&lt;</span> <span class="comment">/*...*/</span> <span class="special">&gt;&amp;</span> <span class="identifier">lhs</span><span class="special">,</span> <span class="keyword">long</span> <span class="identifier">rhs</span><span class="special">);</span>
+    <span class="keyword">static</span> <span class="keyword">bool</span> <span class="identifier">eq_literal</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">large_int</span><span class="special">&lt;</span> <span class="comment">/*...*/</span> <span class="special">&gt;&amp;</span> <span class="identifier">lhs</span><span class="special">,</span> <span class="keyword">long</span> <span class="identifier">rhs</span><span class="special">);</span>
+    <span class="keyword">static</span> <span class="keyword">bool</span> <span class="identifier">is_neg</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">large_int</span><span class="special">&lt;</span> <span class="comment">/*...*/</span> <span class="special">&gt;&amp;</span> <span class="identifier">val</span><span class="special">);</span>
+    <span class="keyword">static</span> <span class="keyword">bool</span> <span class="identifier">is_zero</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">large_int</span><span class="special">&lt;</span> <span class="comment">/*...*/</span> <span class="special">&gt;&amp;</span> <span class="identifier">val</span><span class="special">);</span>
+<span class="special">};</span>
+
+<span class="special">}</span> <span class="comment">// namespace large_int</span>
+<span class="special">}</span> <span class="comment">// namespace boost</span>
+</pre>
+<p>
+    </p>
+<div class="variablelist">
+<p class="title"><b></b></p>
+<dl>
+<dt><span class="term"><code class="literal">low_part_type</code></span></dt>
+<dd><p>
+            The type of the respective <code class="literal">boost::large_int::large_int</code>'s
+            low-part.
+          </p></dd>
+<dt><span class="term"><code class="literal">high_part_type</code></span></dt>
+<dd><p>
+            The type of the respective <code class="literal">boost::large_int::large_int</code>'s
+            high-part.
+          </p></dd>
+<dt><span class="term"><code class="literal">is_large_int</code></span></dt>
+<dd><p>
+            For detection of <code class="literal">boost::large_int::large_int</code> types
+            in generic programming. Will have the value <code class="literal">true</code> if
+            the for all <code class="literal">boost::large_int::large_int</code> based types,
+            <code class="literal">false</code> otherwise.
+          </p></dd>
+<dt><span class="term"><code class="literal">low_bits</code></span></dt>
+<dd><p>
+            The size of the respective <code class="literal">boost::large_int::large_int</code>'s
+            low-part, as a number of binary bits.
+          </p></dd>
+<dt><span class="term"><code class="literal">high_bits</code></span></dt>
+<dd><p>
+            The size of the respective <code class="literal">boost::large_int::large_int</code>'s
+            high-part, as a number of binary bits.
+          </p></dd>
+<dt><span class="term"><code class="literal">size_bits</code></span></dt>
+<dd><p>
+            The size of the respective <code class="literal">boost::large_int::large_int</code>,
+            in total, as a number of binary bits.
+          </p></dd>
+<dt><span class="term"><code class="literal">lt</code></span></dt>
+<dd><p>
+            Compares two <code class="literal">boost::large_int::large_int</code> values, returning
+            true if and only if the value of <code class="literal">lhs</code> is strictly less-than
+            the value of <code class="literal">rhs</code>. (Where the types of <code class="literal">lhs</code>
+            and <code class="literal">rhs</code> do not match, either <code class="literal">lhs</code>
+            or <code class="literal">rhs</code> will be automatically promoted to the larger
+            of the two integer types.)
+          </p></dd>
+<dt><span class="term"><code class="literal">eq</code></span></dt>
+<dd><p>
+            Compares two <code class="literal">boost::large_int::large_int</code> values, returning
+            true if and only if the value of <code class="literal">lhs</code> is strictly equal-to
+            the value of <code class="literal">rhs</code>. (Where the types of <code class="literal">lhs</code>
+            and <code class="literal">rhs</code> do not match, either <code class="literal">lhs</code>
+            or <code class="literal">rhs</code> will be automatically promoted to the larger
+            of the two integer types.)
+          </p></dd>
+<dt><span class="term"><code class="literal">lt_literal</code></span></dt>
+<dd><p>
+            Compares a <code class="literal">boost::large_int::large_int</code> value to a
+            literal, returning true if and only if the value of <code class="literal">lhs</code>
+            is strictly less-than the value of <code class="literal">rhs</code>.
+          </p></dd>
+<dt><span class="term"><code class="literal">eq_literal</code></span></dt>
+<dd><p>
+            Compares a <code class="literal">boost::large_int::large_int</code> value to a
+            literal, returning true if and only if the value of <code class="literal">lhs</code>
+            is strictly equal-to the value of <code class="literal">rhs</code>.
+          </p></dd>
+<dt><span class="term"><code class="literal">is_neg</code></span></dt>
+<dd><p>
+            Returns true if and only if a given <code class="literal">boost::large_int::large_int</code>
+            value is negative (less-than zero). This function may also be used upon
+            unsigned <code class="literal">large_int</code> values (or where the signed status
+            is unknown) without raising a warning, or error.
+          </p></dd>
+<dt><span class="term"><code class="literal">is_zero</code></span></dt>
+<dd><p>
+            Returns true if and only if a given <code class="literal">boost::large_int::large_int</code>
+            value is equal-to zero. Calls to this function will typically be faster
+            than an explicit comparison of a <code class="literal">large_int</code> value against
+            either <code class="literal">large_int</code> or literal zero, as it is unary.
+          </p></dd>
+</dl>
+</div>
+<div class="warning"><table border="0" summary="Warning">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Warning]" src="../../../../../doc/src/images/warning.png"></td>
+<th align="left">Warning</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+        Where large_int_traits is used with a non-<code class="literal">boost::large_int::large_int</code>
+        based type, only the boolean constant <code class="literal">is_large_int</code> will
+        be defined (with the value: false).
+      </p></td></tr>
+</table></div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="boost_largeint.traits.usage_example"></a><a class="link" href="traits.html#boost_largeint.traits.usage_example" title="Usage Example">Usage Example</a>
+</h3></div></div></div>
+<p>
+</p>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">iostream</span><span class="special">&gt;</span> <span class="comment">// For std::cout, std::endl</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">cstdint</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span> <span class="comment">// For uint64_t, int8_t</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">large_int</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span> <span class="comment">// For boost::large_int::large_int,</span>
+                               <span class="comment">//     boost::large_int::large_int_traits</span>
+<span class="keyword">void</span> <span class="identifier">example</span><span class="special">()</span>
+<span class="special">{</span>
+    <span class="comment">// Print the size, in bits, of the high</span>
+    <span class="comment">// and low parts of a 72bit large_int</span>
+    <span class="keyword">typedef</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">large_int</span><span class="special">::</span><span class="identifier">large_int</span><span class="special">&lt;</span><span class="identifier">uint64_t</span><span class="special">,</span> <span class="identifier">int8_t</span><span class="special">&gt;</span> <span class="identifier">lint72_t</span><span class="special">;</span>
+    <span class="keyword">typedef</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">large_int</span><span class="special">::</span><span class="identifier">large_int_traits</span><span class="special">&lt;</span><span class="identifier">lint72_t</span><span class="special">&gt;</span> <span class="identifier">traits_type</span><span class="special">;</span>
+    <span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="string">"lint72_t is composed of "</span>
+              <span class="special">&lt;&lt;</span> <span class="identifier">traits_type</span><span class="special">::</span><span class="identifier">high_bits</span> <span class="special">&lt;&lt;</span> <span class="string">" high-part + "</span>
+              <span class="special">&lt;&lt;</span> <span class="identifier">traits_type</span><span class="special">::</span><span class="identifier">low_bits</span> <span class="special">&lt;&lt;</span> <span class="string">" low-part bits"</span>
+              <span class="special">&lt;&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">endl</span><span class="special">;</span>
+<span class="special">}</span>
+</pre>
+<p>
+      </p>
+</div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2012 Michael J. Tryhorn<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="limits.html"><img src="../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="utils.html"><img src="../../../../../doc/src/images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

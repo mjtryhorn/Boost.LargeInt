@@ -1,0 +1,298 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Large Integer Defaults</title>
+<link rel="stylesheet" href="../../../../../doc/src/boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="../index.html" title="Boost.LargeInt">
+<link rel="up" href="../index.html" title="Boost.LargeInt">
+<link rel="prev" href="utils.html" title="Large Integer Utils">
+<link rel="next" href="io.html" title="Large Integer I/O">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr>
+<td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="../../../../../boost.png"></td>
+<td align="center"><a href="../../../../../index.html">Home</a></td>
+<td align="center"><a href="../../../../../libs/libraries.htm">Libraries</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
+<td align="center"><a href="../../../../../more/index.htm">More</a></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="utils.html"><img src="../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="io.html"><img src="../../../../../doc/src/images/next.png" alt="Next"></a>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="boost_largeint.def"></a><a class="link" href="def.html" title="Large Integer Defaults">Large Integer Defaults</a>
+</h2></div></div></div>
+<p>
+      Standard <code class="literal">boost::large_int::large_int</code> based integral types.
+      These integral types are provided in addition to those supplied by the headers:
+      '<code class="literal">stdint.h</code>', '<code class="literal">cstdint</code>' or '<code class="literal">boost/cstdint.hpp</code>',
+      and have similar names to those types for ease of identification and use.
+    </p>
+<p>
+      Provided integer types:
+    </p>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+              <p>
+                Type Name
+              </p>
+            </th>
+<th>
+              <p>
+                Signed/Unsigned
+              </p>
+            </th>
+<th>
+              <p>
+                Size
+              </p>
+            </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+              <p>
+                <code class="literal">boost::large_int::lint64_t</code>
+              </p>
+            </td>
+<td>
+              <p>
+                signed
+              </p>
+            </td>
+<td>
+              <p>
+                64bit (32bit low-part, 32bit high-part)
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                <code class="literal">boost::large_int::luint64_t</code>
+              </p>
+            </td>
+<td>
+              <p>
+                unsigned
+              </p>
+            </td>
+<td>
+              <p>
+                64bit (32bit low-part, 32bit high-part)
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                <code class="literal">boost::large_int::lint96_t</code>
+              </p>
+            </td>
+<td>
+              <p>
+                signed
+              </p>
+            </td>
+<td>
+              <p>
+                96bit (64bit low-part, 32bit high-part)
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                <code class="literal">boost::large_int::luint96_t</code>
+              </p>
+            </td>
+<td>
+              <p>
+                unsigned
+              </p>
+            </td>
+<td>
+              <p>
+                96bit (64bit low-part, 32bit high-part)
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                <code class="literal">boost::large_int::lint128_t</code>
+              </p>
+            </td>
+<td>
+              <p>
+                signed
+              </p>
+            </td>
+<td>
+              <p>
+                128bit (64bit low-part, 64bit high-part)
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                <code class="literal">boost::large_int::luint128_t</code>
+              </p>
+            </td>
+<td>
+              <p>
+                unsigned
+              </p>
+            </td>
+<td>
+              <p>
+                128bit (64bit low-part, 64bit high-part)
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                <code class="literal">boost::large_int::lint160_t</code>
+              </p>
+            </td>
+<td>
+              <p>
+                signed
+              </p>
+            </td>
+<td>
+              <p>
+                160bit (128bit low-part, 32bit high-part)
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                <code class="literal">boost::large_int::luint160_t</code>
+              </p>
+            </td>
+<td>
+              <p>
+                unsigned
+              </p>
+            </td>
+<td>
+              <p>
+                160bit (128bit low-part, 32bit high-part)
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                <code class="literal">boost::large_int::lint192_t</code>
+              </p>
+            </td>
+<td>
+              <p>
+                signed
+              </p>
+            </td>
+<td>
+              <p>
+                192bit (128bit low-part, 64bit high-part)
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                <code class="literal">boost::large_int::luint192_t</code>
+              </p>
+            </td>
+<td>
+              <p>
+                unsigned
+              </p>
+            </td>
+<td>
+              <p>
+                192bit (128bit low-part, 64bit high-part)
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                <code class="literal">boost::large_int::lint256_t</code>
+              </p>
+            </td>
+<td>
+              <p>
+                signed
+              </p>
+            </td>
+<td>
+              <p>
+                256bit (128bit low-part, 128bit high-part)
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                <code class="literal">boost::large_int::luint256_t</code>
+              </p>
+            </td>
+<td>
+              <p>
+                unsigned
+              </p>
+            </td>
+<td>
+              <p>
+                256bit (128bit low-part, 128bit high-part)
+              </p>
+            </td>
+</tr>
+</tbody>
+</table></div>
+<p>
+      Where the underlying platform has built-in support for any of the above integer
+      types (most commonly for signed and unsigned 64bit), the available built-in
+      types will be used in preference to large_int, for efficiency.
+    </p>
+<div class="tip"><table border="0" summary="Tip">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Tip]" src="../../../../../doc/src/images/tip.png"></td>
+<th align="left">Tip</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+        Where compiler support for 64bit integers is unknown or unavailable, the
+        given lint64_t or luint64_t types could be used rather than testing for
+        <code class="literal">BOOST_NO_INT64_T</code>, without any degradation to performance.
+      </p></td></tr>
+</table></div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2012 Michael J. Tryhorn<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="utils.html"><img src="../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="io.html"><img src="../../../../../doc/src/images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

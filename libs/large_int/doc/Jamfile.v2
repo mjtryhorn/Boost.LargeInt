@@ -1,0 +1,44 @@
+# Boost.LargeInt Library documentation Jamfile
+#
+# Copyright (c) 2012 Michael J. Tryhorn (mjtryhorn at gmail dot com)
+#
+# Distributed under the Boost Software License, Version 1.0.
+# (See accompanying file LICENSE_1_0.txt or copy at
+# http://www.boost.org/LICENSE_1_0.txt)
+#
+# See http://www.boost.org/ for latest version.
+#
+
+using quickbook ;
+
+xml large_int
+    : large_int.qbk
+    ;
+
+boostbook standalone
+    :
+        large_int
+    :
+        # HTML options:
+        <xsl:param>navig.graphics=1
+        <xsl:param>chunk.section.depth=1
+        <xsl:param>chunk.first.sections=0
+        <xsl:param>toc.section.depth=1
+        <xsl:param>toc.max.depth=1
+        <xsl:param>generate.section.toc.level=4
+        <xsl:param>boost.root=../../../..
+
+        # PDF Options:
+        <xsl:param>fop1.extensions=0
+        <xsl:param>xep.extensions=1
+        <xsl:param>fop.extensions=0
+        <xsl:param>body.start.indent=0pt
+        <xsl:param>page.margin.inner=0.5in
+        <xsl:param>page.margin.outer=0.5in
+        <xsl:param>admon.graphics=1
+        <format>pdf:<xsl:param>admon.graphics.extension=".svg"
+        <format>pdf:<xsl:param>admon.graphics.path=$(boost-images)/
+        <format>pdf:<xsl:param>boost.url.prefix=http://www.boost.org/doc/libs/release/libs/regex/doc/html
+    ;
+
+install pdf-install : standalone : <location>. <install-type>PDF ;

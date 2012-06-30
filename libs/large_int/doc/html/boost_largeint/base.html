@@ -1,0 +1,663 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>The Large Integer Object</title>
+<link rel="stylesheet" href="../../../../../doc/src/boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="../index.html" title="Boost.LargeInt">
+<link rel="up" href="../index.html" title="Boost.LargeInt">
+<link rel="prev" href="quickstart.html" title="Quick Start Guide for 128bit Mathematicians">
+<link rel="next" href="cast.html" title="Large Integer Cast">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr>
+<td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="../../../../../boost.png"></td>
+<td align="center"><a href="../../../../../index.html">Home</a></td>
+<td align="center"><a href="../../../../../libs/libraries.htm">Libraries</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
+<td align="center"><a href="../../../../../more/index.htm">More</a></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="quickstart.html"><img src="../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="cast.html"><img src="../../../../../doc/src/images/next.png" alt="Next"></a>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="boost_largeint.base"></a><a class="link" href="base.html" title="The Large Integer Object">The Large Integer Object</a>
+</h2></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section"><a href="base.html#boost_largeint.base.motivation">Motivation</a></span></dt>
+<dt><span class="section"><a href="base.html#boost_largeint.base.defining_a_new_largeint_based_type">Defining
+      a New LargeInt Based Type</a></span></dt>
+<dt><span class="section"><a href="base.html#boost_largeint.base.largeint_construction">LargeInt Construction</a></span></dt>
+</dl></div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="boost_largeint.base.motivation"></a><a class="link" href="base.html#boost_largeint.base.motivation" title="Motivation">Motivation</a>
+</h3></div></div></div>
+<p>
+        When defining functions with integers in standard, school-type mathematics,
+        there are neither restrictions upon the input values that may be used, nor
+        upon the result that may be calculated, except those limits which we impose
+        ourselves (and, of course, the oft-lurking <span class="emphasis"><em>division-by-zero</em></span>).
+        There are also few restrictions upon the order of calculation, especially
+        where the mathematical operators are commutative<sup>[<a name="boost_largeint.base.motivation.f0" href="#ftn.boost_largeint.base.motivation.f0" class="footnote">1</a>]</sup> or associative<sup>[<a name="boost_largeint.base.motivation.f1" href="#ftn.boost_largeint.base.motivation.f1" class="footnote">2</a>]</sup>. Not so in C, or C++.
+      </p>
+<p>
+        When designing integral calculations in either C or C++, the programmer must
+        be conscious of at least these three things:
+      </p>
+<div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem">
+            the possible input value range,
+          </li>
+<li class="listitem">
+            the possible output value range,
+          </li>
+<li class="listitem">
+            the maximum or minimum value which could be stored during the calculation
+            itself.
+          </li>
+</ol></div>
+<p>
+        From these, a decision must be made as to the order of calculation and the
+        size of the integers' storage. Should the input or output values be declared
+        as: 'int', 'short', 'long', 'unsigned long', 'intmax_t', 'std::size_t', a
+        template, or otherwise? Making an inappropriate decision here could be disastrous.
+        For example, consider the following simple function for converting disk usage
+        to percentage values.
+      </p>
+<p>
+        In standard mathematics we might such a function thus:
+      </p>
+<p>
+        <span class="emphasis"><em>&#402;</em></span>(<span class="emphasis"><em>u</em></span>, <span class="emphasis"><em>t</em></span>) =
+        100(<span class="emphasis"><em>u</em></span> / <span class="emphasis"><em>t</em></span>) ; Where <span class="bold"><strong><span class="emphasis"><em>u</em></span></strong></span>
+        is the bytes-used, <span class="bold"><strong><span class="emphasis"><em>t</em></span></strong></span>
+        the bytes-total, and <span class="bold"><strong><span class="emphasis"><em>&#402;</em></span>(<span class="emphasis"><em>u</em></span>,
+        <span class="emphasis"><em>t</em></span>)</strong></span> is the usage level as a percentage
+      </p>
+<p>
+        And in C/C++, we might convert it to the following:
+</p>
+<pre class="programlisting"><span class="keyword">int</span> <span class="identifier">disk_used_to_percent</span><span class="special">(</span><span class="keyword">int</span> <span class="identifier">bytes_used</span><span class="special">,</span> <span class="keyword">int</span> <span class="identifier">bytes_total</span><span class="special">)</span>
+<span class="special">{</span>
+    <span class="keyword">return</span> <span class="special">(</span><span class="identifier">bytes_used</span> <span class="special">*</span> <span class="number">100</span><span class="special">)</span> <span class="special">/</span> <span class="identifier">bytes_total</span><span class="special">;</span>
+<span class="special">}</span>
+</pre>
+<p>
+      </p>
+<div class="note"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../../../../doc/src/images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+          The order of division and multiplication in the equivalent function is
+          reversed as, in C/C++, neither the multiplication nor division operators
+          are strictly associative. If these operations were not re-ordered, then
+          the function would return <code class="literal">0</code> for all values of <code class="literal">bytes_used</code>
+          in the range: (-<code class="literal">bytes_total</code>...+<code class="literal">bytes_total</code>).
+        </p></td></tr>
+</table></div>
+<p>
+        For most input values, this function will return exactly the value expected,
+        and if the input never exceeds the limits of the 'int' type, this may indeed
+        suffice. However, if the compiler represents 'int' as 32bit (including one
+        bit for the integer's sign), and if the user happens to have a 2GiB system
+        disk (2<sup>31</sup> bytes), what would occur when the usage is 50%?
+      </p>
+<p>
+</p>
+<pre class="programlisting"><span class="keyword">return</span> <span class="special">(</span><span class="number">1073741824</span> <span class="special">*</span> <span class="number">100</span> <span class="comment">/* Overflow! */</span><span class="special">)</span> <span class="special">/</span> <span class="number">2147483648</span><span class="special">;</span>
+</pre>
+<p>
+      </p>
+<p>
+        The integer overflows! We might receive a result of 0%, but definitely not
+        the expected 50%. There is a common trick to work-around this precise problem.
+        If we re-write the function thus:
+      </p>
+<p>
+</p>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">cstdint</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span> <span class="comment">// For intmax_t</span>
+
+<span class="keyword">int</span> <span class="identifier">disk_used_to_percent</span><span class="special">(</span><span class="keyword">int</span> <span class="identifier">bytes_used</span><span class="special">,</span> <span class="keyword">int</span> <span class="identifier">bytes_total</span><span class="special">)</span>
+<span class="special">{</span>
+    <span class="keyword">return</span> <span class="special">(</span><span class="keyword">static_cast</span><span class="special">&lt;</span><span class="identifier">intmax_t</span><span class="special">&gt;(</span><span class="identifier">bytes_used</span><span class="special">)</span> <span class="special">*</span> <span class="number">100</span><span class="special">)</span> <span class="special">/</span> <span class="identifier">bytes_total</span><span class="special">;</span>
+<span class="special">}</span>
+</pre>
+<p>
+      </p>
+<p>
+        Provided that the compiler has support for integers larger than the standard
+        'int', we will both resolve the overflow problem and receive the expected
+        result of 50%. But, what if the compiler <span class="emphasis"><em>does not</em></span> support
+        64bit or larger integers? Or, what if we have the more modern scenario of
+        having to write the function thus:
+      </p>
+<p>
+        <a name="overview_final_example"></a>
+</p>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">cstdint</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span> <span class="comment">// For uint64_t</span>
+
+<span class="keyword">int</span> <span class="identifier">disk_used_to_percent</span><span class="special">(</span><span class="identifier">uint64_t</span> <span class="identifier">bytes_used</span><span class="special">,</span> <span class="identifier">uint64_t</span> <span class="identifier">bytes_total</span><span class="special">)</span>
+<span class="special">{</span>
+    <span class="comment">// Oops!  Cannot cast 'bytes_used' as</span>
+    <span class="comment">// we have nothing larger than 64bit!</span>
+    <span class="keyword">return</span> <span class="special">(</span><span class="identifier">bytes_used</span> <span class="special">*</span> <span class="number">100</span><span class="special">)</span> <span class="special">/</span> <span class="identifier">bytes_total</span><span class="special">;</span>
+<span class="special">}</span>
+</pre>
+<p>
+      </p>
+<p>
+        Again, for most input this will be fine. But again, what if we are a data-centre
+        manager and this is a large, logical disk? Or, what if we are a particularly
+        prudent programmer and want to ensure that the function will always produce
+        the expected result <span class="emphasis"><em>no matter what</em></span> input values are
+        used? A way of manipulating integers larger than 64bits in size is needed,
+        but what?
+      </p>
+<div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem">
+            We might find something compiler or system specific - but even if something
+            were available, using it would reduce the function's portability.
+          </li>
+<li class="listitem">
+            We might re-write the function to use floating-point arithmetic (<code class="literal">float</code>,
+            or <code class="literal">double</code>), for its extended range - but this would
+            add the inaccuracy inherent in floating-point values. (This would be
+            more profound in examples more complex than this, but is still a valid
+            concern.)
+          </li>
+<li class="listitem">
+            We might even consider encoding the values as Binary Coded Decimal <sup>[<a name="boost_largeint.base.motivation.f2" href="#ftn.boost_largeint.base.motivation.f2" class="footnote">3</a>]</sup>.
+          </li>
+<li class="listitem">
+            What we really need is a means of manipulating integers larger than those
+            the compiler natively supports - what we need is Boost.LargeInt!
+          </li>
+</ol></div>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="boost_largeint.base.defining_a_new_largeint_based_type"></a><a class="link" href="base.html#boost_largeint.base.defining_a_new_largeint_based_type" title="Defining a New LargeInt Based Type">Defining
+      a New LargeInt Based Type</a>
+</h3></div></div></div>
+<p>
+        Boost.LargeInt provides the means to declare and manipulate integer values
+        which are larger than the those the underlying compiler natively supports.
+        It achieves this by composing two smaller integers into a larger whole.
+      </p>
+<p>
+        To use Boost.LargeInt, a type of <code class="literal">boost::large_int::large_int&lt;T,
+        U&gt;</code> must be defined, where:
+      </p>
+<div class="variablelist">
+<p class="title"><b></b></p>
+<dl>
+<dt><span class="term"><span class="bold"><strong><code class="literal">T</code></strong></span></span></dt>
+<dd><p>
+              The low-part (LSB) of the large_int value. This <span class="bold"><strong>must</strong></span>
+              be both <span class="emphasis"><em>unsigned</em></span>, and an <span class="emphasis"><em>integer</em></span>
+              or <span class="emphasis"><em>integer-like</em></span> type.
+            </p></dd>
+<dt><span class="term"><span class="bold"><strong><code class="literal">U</code></strong></span></span></dt>
+<dd><p>
+              The high-part (MSB) of the large_int value. This <span class="bold"><strong>may</strong></span>
+              be either <span class="emphasis"><em>signed</em></span> or <span class="emphasis"><em>unsigned</em></span>,
+              but <span class="bold"><strong>must</strong></span> be an <span class="emphasis"><em>integer</em></span>
+              or <span class="emphasis"><em>integer-like</em></span> type.
+            </p></dd>
+</dl>
+</div>
+<p>
+        So, to declare a 128bit integer for a compiler which supports 64bit natively,
+        we might declare a our new integer thus:
+      </p>
+<p>
+</p>
+<pre class="programlisting"><span class="comment">// Declare a 128bit signed integer composed of two 64s</span>
+<span class="keyword">typedef</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">large_int</span><span class="special">::</span><span class="identifier">large_int</span><span class="special">&lt;</span><span class="identifier">uint64_t</span><span class="special">,</span> <span class="identifier">int64_t</span><span class="special">&gt;</span> <span class="identifier">lint128_t</span><span class="special">;</span>
+</pre>
+<p>
+      </p>
+<p>
+        As Boost.LargeInt defines all standard operators for this type, we may now
+        use it in all calculations where 128 binary bits of integral space are required.
+        If we were performing multiplications with 128bit values, we might even require
+        more than 128bits to store the intermediate results. If so, the solution
+        is just as simple:
+      </p>
+<p>
+</p>
+<pre class="programlisting"><span class="comment">// Declare a 256bit signed integer composed</span>
+<span class="comment">// of two 128s, themselves composed of two 64s apiece</span>
+<span class="keyword">typedef</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">large_int</span><span class="special">::</span><span class="identifier">large_int</span><span class="special">&lt;</span><span class="identifier">uint64_t</span><span class="special">,</span> <span class="identifier">int64_t</span><span class="special">&gt;</span> <span class="identifier">lint128_t</span><span class="special">;</span>
+<span class="keyword">typedef</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">large_int</span><span class="special">::</span><span class="identifier">large_int</span><span class="special">&lt;</span><span class="identifier">uint64_t</span><span class="special">,</span> <span class="identifier">uint64_t</span><span class="special">&gt;</span> <span class="identifier">luint128_t</span><span class="special">;</span>
+<span class="keyword">typedef</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">large_int</span><span class="special">::</span><span class="identifier">large_int</span><span class="special">&lt;</span><span class="identifier">luint128_t</span><span class="special">,</span> <span class="identifier">lint128_t</span><span class="special">&gt;</span> <span class="identifier">lint256_t</span><span class="special">;</span>
+</pre>
+<p>
+      </p>
+<p>
+        As <code class="literal">boost::large_int::large_int</code> types are themselves <span class="emphasis"><em>integer-like</em></span>,
+        they may be used as the low-part (<span class="bold"><strong><code class="literal">T</code></strong></span>),
+        high-part (<span class="bold"><strong><code class="literal">U</code></strong></span>) or both
+        parts of yet another <code class="literal">boost::large_int::large_int</code> based
+        type, thus removing any limits upon the possible size of these integers except
+        for what the compiler or system must necessarily impose themselves. (For
+        example: there may be a compiler-imposed limit on maximum template recursion.)
+        There is also no requirement that the low and high parts match in size. If
+        we prefer, we could go half-way:
+      </p>
+<p>
+</p>
+<pre class="programlisting"><span class="comment">// Declare a 192bit integer composed of one 128s and one 64</span>
+<span class="keyword">typedef</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">large_int</span><span class="special">::</span><span class="identifier">large_int</span><span class="special">&lt;</span><span class="identifier">uint64_t</span><span class="special">,</span> <span class="identifier">int64_t</span><span class="special">&gt;</span> <span class="identifier">lint128_t</span><span class="special">;</span>
+<span class="keyword">typedef</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">large_int</span><span class="special">::</span><span class="identifier">large_int</span><span class="special">&lt;</span><span class="identifier">luint128_t</span><span class="special">,</span> <span class="identifier">int64_t</span><span class="special">&gt;</span> <span class="identifier">lint192_t</span><span class="special">;</span>
+</pre>
+<p>
+      </p>
+<div class="note"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../../../../doc/src/images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+          As the size of any <code class="literal">boost::large_int::large_int</code> type
+          increases, so must the time-complexity of its multiplication, division
+          and modulus operations (as they would have additional binary-bits to manipulate).
+          By defining a more economically-sized type, we may improve calculation
+          performance.
+        </p></td></tr>
+</table></div>
+<p>
+        Specifically, for a type to be sufficiently <span class="emphasis"><em>integer-like</em></span>
+        and therefore usable as part of a new <code class="literal">large_int</code>, the type
+        must support the following:
+      </p>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                <p>
+                  Operation
+                </p>
+              </th>
+<th>
+                <p>
+                  Description
+                </p>
+              </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+                <p>
+                  <code class="literal">operator!</code>
+                </p>
+              </td>
+<td>
+                <p>
+                  Logical NOT
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="literal">operator++</code> (prefix)
+                </p>
+              </td>
+<td>
+                <p>
+                  Increment by 1
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="literal">operator--</code> (prefix)
+                </p>
+              </td>
+<td>
+                <p>
+                  Decrement by 1
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="literal">operator~</code>
+                </p>
+              </td>
+<td>
+                <p>
+                  Bitwise compliment
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="literal">operator|</code>
+                </p>
+              </td>
+<td>
+                <p>
+                  Bitwise OR
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="literal">operator&amp;</code>
+                </p>
+              </td>
+<td>
+                <p>
+                  Bitwise AND
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="literal">operator^</code>
+                </p>
+              </td>
+<td>
+                <p>
+                  Bitwise XOR
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="literal">operator&lt;&lt;</code>
+                </p>
+              </td>
+<td>
+                <p>
+                  Bitwise left-shift
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="literal">operator&gt;&gt;</code>
+                </p>
+              </td>
+<td>
+                <p>
+                  Bitwise right-shift
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="literal">operator&lt;&lt;=</code>
+                </p>
+              </td>
+<td>
+                <p>
+                  Bitwise left-shift-and-store
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="literal">operator&gt;&gt;=</code>
+                </p>
+              </td>
+<td>
+                <p>
+                  Bitwise right-shift-and-store
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="literal">operator+=</code>
+                </p>
+              </td>
+<td>
+                <p>
+                  Add-and-store
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="literal">operator|=</code>
+                </p>
+              </td>
+<td>
+                <p>
+                  Bitwise OR-and-store
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="literal">operator&lt;</code>
+                </p>
+              </td>
+<td>
+                <p>
+                  Logical less-than
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="literal">operator==</code>
+                </p>
+              </td>
+<td>
+                <p>
+                  Logical equals
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="literal">operator=</code>
+                </p>
+              </td>
+<td>
+                <p>
+                  Standard assignment
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  Default-construction
+                </p>
+              </td>
+<td>
+                <p>
+                  Construction from zero arguments
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  Copy-construction
+                </p>
+              </td>
+<td>
+                <p>
+                  Construction from another instance
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  std::numeric_limits
+                </p>
+              </td>
+<td>
+                <p>
+                  A specialization of std::numeric_limits must be available
+                </p>
+              </td>
+</tr>
+</tbody>
+</table></div>
+<div class="note"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../../../../doc/src/images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+          All built-in integers and those provided by cstdint or an equivalent support
+          the above operations and more, and are therefore usable with Boost.LargeInt.
+          Where any attempt is made to use an inappropriate type, the respective
+          application code will likely fail to compile.
+        </p></td></tr>
+</table></div>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="boost_largeint.base.largeint_construction"></a><a class="link" href="base.html#boost_largeint.base.largeint_construction" title="LargeInt Construction">LargeInt Construction</a>
+</h3></div></div></div>
+<p>
+        Once we have a concrete <code class="literal">boost::large_int::large_int</code> based
+        type, how may we create one or more instances and assign values to them?
+        By far the the simplest way is by construction, and <code class="literal">boost::large_int::large_int</code>
+        supports the following constructors:
+      </p>
+<p>
+</p>
+<pre class="programlisting"><span class="keyword">explicit</span> <span class="identifier">large_int</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">T</span><span class="special">&amp;</span> <span class="identifier">lo</span> <span class="special">=</span> <span class="identifier">T</span><span class="special">());</span>
+<span class="identifier">large_int</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">U</span><span class="special">&amp;</span> <span class="identifier">hi</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">T</span><span class="special">&amp;</span> <span class="identifier">lo</span><span class="special">);</span>
+<span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">Value</span><span class="special">&gt;</span> <span class="identifier">large_int</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">Value</span><span class="special">&amp;</span> <span class="identifier">val</span><span class="special">);</span>
+</pre>
+<p>
+      </p>
+<p>
+        The first acts as both the default, zero-argument constructor and as a single-argument
+        constructor taking a value for the new <code class="literal">large_int</code>'s low-part.
+        This constructor will always set the <code class="literal">large_int</code>'s high-part
+        to zero, and yield a non-negative result.
+      </p>
+<p>
+</p>
+<pre class="programlisting"><span class="comment">// Declare and construct a pair of 128bit integers</span>
+<span class="keyword">typedef</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">large_int</span><span class="special">::</span><span class="identifier">large_int</span><span class="special">&lt;</span><span class="identifier">uint64_t</span><span class="special">,</span> <span class="identifier">int64_t</span><span class="special">&gt;</span> <span class="identifier">lint128_t</span><span class="special">;</span>
+<span class="identifier">lint128_t</span> <span class="identifier">default_constructed</span><span class="special">;</span>
+<span class="identifier">lint128_t</span> <span class="identifier">initialised_to_one</span><span class="special">(</span><span class="keyword">static_cast</span><span class="special">&lt;</span><span class="identifier">uint64_t</span><span class="special">&gt;(</span><span class="number">1</span><span class="special">));</span>
+</pre>
+<p>
+      </p>
+<p>
+        The second allows the creation of a <code class="literal">large_int</code> by specifying
+        the initial content for both the high and low parts.
+      </p>
+<p>
+</p>
+<pre class="programlisting"><span class="comment">// Declare and construct a 128bit integer, with fully initialised content</span>
+<span class="keyword">typedef</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">large_int</span><span class="special">::</span><span class="identifier">large_int</span><span class="special">&lt;</span><span class="identifier">uint64_t</span><span class="special">,</span> <span class="identifier">int64_t</span><span class="special">&gt;</span> <span class="identifier">lint128_t</span><span class="special">;</span>
+<span class="identifier">lint128_t</span> <span class="identifier">fully_initialised</span><span class="special">(</span><span class="keyword">static_cast</span><span class="special">&lt;</span><span class="identifier">int64_t</span><span class="special">&gt;(</span><span class="number">0</span><span class="identifier">x0123456789abcdef</span><span class="special">),</span>
+                            <span class="keyword">static_cast</span><span class="special">&lt;</span><span class="identifier">uint64_t</span><span class="special">&gt;(</span><span class="number">0</span><span class="identifier">xfedcba9876543210</span><span class="special">));</span>
+</pre>
+<p>
+      </p>
+<p>
+        The third and final constructor template allows for the creation of a <code class="literal">large_int</code>
+        from any <span class="emphasis"><em>integer-like</em></span> source. It is implicit, to allow
+        the construction of <code class="literal">large_int</code> values from literal function
+        or operator arguments.
+      </p>
+<p>
+</p>
+<pre class="programlisting"><span class="comment">// Declare and construct a 128bit integer from a literal source</span>
+<span class="keyword">typedef</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">large_int</span><span class="special">::</span><span class="identifier">large_int</span><span class="special">&lt;</span><span class="identifier">uint64_t</span><span class="special">,</span> <span class="identifier">int64_t</span><span class="special">&gt;</span> <span class="identifier">lint128_t</span><span class="special">;</span>
+<span class="identifier">lint128_t</span> <span class="identifier">cast_constructed</span><span class="special">(-</span><span class="number">17</span><span class="special">);</span>
+</pre>
+<p>
+      </p>
+<p>
+        All three constructors have constant, <span class="bold"><strong>O(1)</strong></span>
+        time-complexity.
+      </p>
+<div class="note"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../../../../doc/src/images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+          Although not explicitly specified, all <code class="literal">boost::large_int::large_int</code>
+          types also support the default copy-constructor and assignment operator.
+        </p></td></tr>
+</table></div>
+<p>
+        <code class="literal">boost::large_int::large_int</code> values may also be created
+        via the custom casting operator <code class="literal">boost::large_int::large_int_cast</code>,
+        via the utility function <code class="literal">boost::large_int::make_large_int</code>,
+        or even via <a href="../../../../../libs/conversion/lexical_cast.htm" target="_top"><code class="literal">boost::lexical_cast</code></a>.
+        These are covered in later sections.
+      </p>
+<div class="note"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../../../../doc/src/images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+          For <code class="literal">boost::lexical_cast</code> support, the streaming operators
+          must be made available via <code class="computeroutput"><span class="preprocessor">#include</span>
+          <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">large_int</span><span class="special">/</span><span class="identifier">io</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span></code>.
+        </p></td></tr>
+</table></div>
+</div>
+<div class="footnotes">
+<br><hr width="100" align="left">
+<div class="footnote"><p><sup>[<a name="ftn.boost_largeint.base.motivation.f0" href="#boost_largeint.base.motivation.f0" class="para">1</a>] </sup>
+          Commutative: For all values of 'a' and 'b', rearranging the terms around
+          a mathematical operator produces the same result; a &#215; b = b &#215; a.
+        </p></div>
+<div class="footnote"><p><sup>[<a name="ftn.boost_largeint.base.motivation.f1" href="#boost_largeint.base.motivation.f1" class="para">2</a>] </sup>
+          Associative: For all values of 'a', 'b' and 'c', changing the order of
+          evaluation of a mathematical operation produces the same result; (a + b)
+          + c = a + (b + c).
+        </p></div>
+<div class="footnote"><p><sup>[<a name="ftn.boost_largeint.base.motivation.f2" href="#boost_largeint.base.motivation.f2" class="para">3</a>] </sup>
+              <a href="http://en.wikipedia.org/wiki/Binary-coded_decimal" target="_top">http://en.wikipedia.org/wiki/Binary-coded_decimal</a>
+            </p></div>
+</div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2012 Michael J. Tryhorn<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="quickstart.html"><img src="../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="cast.html"><img src="../../../../../doc/src/images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>
