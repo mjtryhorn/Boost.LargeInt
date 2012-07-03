@@ -17,6 +17,7 @@
 #endif
 
 #include <boost/large_int/traits.hpp> // For large_int_traits
+#include <boost/large_int/shift.hpp> // For large_int_shift
 #include <boost/large_int/cast.hpp> // For large_int_cast
 #include <boost/large_int/div.hpp> // For large_int_div_t, div
 #include <boost/large_int/base.hpp> // For large_int
@@ -133,8 +134,8 @@ large_int<T, U>& large_int<T, U>::operator*= (const this_type& val)
             ret += tmp;
         }
 
-        val_copy >>= 1;
-        tmp <<= 1;
+        val_copy = large_int_shift<this_type>::right(val_copy);
+        tmp      = large_int_shift<this_type>::left(tmp);
     }
 
     // Commit the result
@@ -186,97 +187,13 @@ large_int<T, U>& large_int<T, U>::operator>>= (const this_type& val)
 template<class T, class U>
 large_int<T, U>& large_int<T, U>::operator<<= (int val)
 {
-    // Take a copy of *this, to modify
-    this_type ret(*this);
-
-    // Perform the left-shift
-    if( val >= bits )
-    {
-        // Behavior is undefined within the C/C++ standard,
-        // but GNU-gcc uses the remainder of: (val / bits)
-        val %= bits;
-    }
-    if( val >= hibits )
-    {
-        // High part becomes zero
-        ret.m_hi = 0;
-    }
-    if( val >= lobits )
-    {
-        // Shift the entirety of the low part into
-        // the least-significant bits of the high part
-        val       -= lobits;
-        ret.m_hi <<= lobits % hibits;
-        ret.m_hi  |= large_int_cast<high_part_type>(ret.m_lo);
-        ret.m_lo   = low_part_type(0);
-    }
-    if( val != 0 )
-    {
-        // Shift the high part
-        ret.m_hi <<= val;
-
-        // Carry bits from the low part
-        const low_part_type mask(low_part_type(~low_part_type(0) << val));
-        ret.m_hi |= large_int_cast<high_part_type>(
-            (ret.m_lo >> (lobits - val)) & ~mask);
-
-        // Shift the low part
-        ret.m_lo <<= val;
-    }
-
-    // Commit the result
-    return( *this = ret );
+    return( *this = large_int_shift<this_type>::left(*this, val) );
 }
 
 template<class T, class U>
 large_int<T, U>& large_int<T, U>::operator>>= (int val)
 {
-    // Take a copy of *this, to modify
-    this_type ret(*this);
-
-    // Perform the right-shift
-    if( val >= bits )
-    {
-        // Behavior is undefined within the C/C++ standard,
-        // but GNU-gcc uses the remainder of: (val / bits)
-        val %= bits;
-    }
-    if( val >= lobits )
-    {
-        // Low part becomes zero
-        ret.m_lo = 0;
-    }
-    if( val >= hibits )
-    {
-        // Shift the entirety of the high part into
-        // the most-significant bits of the low part
-        val       -= hibits;
-        ret.m_lo >>= hibits % lobits;
-        ret.m_lo  |= (lobits >= hibits)
-                   ? low_part_type(large_int_cast<low_part_type>(ret.m_hi)
-                                   << ((lobits - hibits) % lobits))
-                   : large_int_cast<low_part_type>(
-                       ret.m_hi >> ((hibits - lobits) % hibits));
-        ret.m_hi   = (large_int_traits<this_type>::is_neg(*this))
-                   ? high_part_type(-1)
-                   : high_part_type(0);
-    }
-    if( val != 0 )
-    {
-        // Shift the low part
-        ret.m_lo >>= val;
-
-        // Borrow bits from the high part
-        const high_part_type mask(high_part_type(~high_part_type(0) << val));
-        ret.m_lo |= low_part_type(large_int_cast<low_part_type>(
-            ret.m_hi & ~mask) << (lobits - val));
-
-        // Shift the high part
-        ret.m_hi >>= val;
-    }
-
-    // Commit the result
-    return( *this = ret );
+    return( *this = large_int_shift<this_type>::right(*this, val) );
 }
 
 // Comparison operators --

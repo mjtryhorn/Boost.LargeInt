@@ -201,7 +201,6 @@ template<class T> struct large_int_traits
 // large_int_traits for large_int types --
 template<class T, class U> struct large_int_traits<large_int<T, U> >
 {
-public:
     // Types --
     typedef T low_part_type;
     typedef U high_part_type;

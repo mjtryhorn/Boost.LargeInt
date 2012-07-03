@@ -1,0 +1,105 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Large Integer Shift</title>
+<link rel="stylesheet" href="../../../../../doc/src/boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="../index.html" title="Boost.LargeInt">
+<link rel="up" href="../index.html" title="Boost.LargeInt">
+<link rel="prev" href="traits.html" title="Large Integer Traits">
+<link rel="next" href="utils.html" title="Large Integer Utils">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr>
+<td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="../../../../../boost.png"></td>
+<td align="center"><a href="../../../../../index.html">Home</a></td>
+<td align="center"><a href="../../../../../libs/libraries.htm">Libraries</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
+<td align="center"><a href="../../../../../more/index.htm">More</a></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="traits.html"><img src="../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="utils.html"><img src="../../../../../doc/src/images/next.png" alt="Next"></a>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="boost_largeint.shift"></a><a class="link" href="shift.html" title="Large Integer Shift">Large Integer Shift</a>
+</h2></div></div></div>
+<div class="toc"><dl><dt><span class="section"><a href="shift.html#boost_largeint.shift.usage_example">Usage Example</a></span></dt></dl></div>
+<p>
+      To support fast left and right shifting, Boost.LargeInt defines the class template
+      <code class="literal">boost::large_int::large_int_shift</code>. This is fully defined
+      for all <code class="literal">large_int</code> and <span class="emphasis"><em>integer-like</em></span>
+      types.
+    </p>
+<p>
+</p>
+<pre class="programlisting"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+<span class="keyword">namespace</span> <span class="identifier">large_int</span> <span class="special">{</span>
+
+<span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">&gt;</span> <span class="keyword">struct</span> <span class="identifier">large_int_shift</span>
+<span class="special">{</span>
+    <span class="comment">// Utilities --</span>
+    <span class="keyword">static</span> <span class="identifier">T</span> <span class="identifier">left</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">T</span><span class="special">&amp;</span> <span class="identifier">val</span><span class="special">);</span> <span class="comment">// Left-shift-by-one</span>
+    <span class="keyword">static</span> <span class="identifier">T</span> <span class="identifier">right</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">T</span><span class="special">&amp;</span> <span class="identifier">val</span><span class="special">);</span> <span class="comment">// Right-shift-by-one</span>
+    <span class="keyword">static</span> <span class="identifier">T</span> <span class="identifier">left</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">T</span><span class="special">&amp;</span> <span class="identifier">val</span><span class="special">,</span> <span class="keyword">int</span> <span class="identifier">bits</span><span class="special">);</span>
+    <span class="keyword">static</span> <span class="identifier">T</span> <span class="identifier">right</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">T</span><span class="special">&amp;</span> <span class="identifier">val</span><span class="special">,</span> <span class="keyword">int</span> <span class="identifier">bits</span><span class="special">);</span>
+<span class="special">};</span>
+
+<span class="special">}</span> <span class="comment">// namespace large_int</span>
+<span class="special">}</span> <span class="comment">// namespace boost</span>
+</pre>
+<p>
+    </p>
+<p>
+      As <code class="literal">operator&lt;&lt;</code> and <code class="literal">operator&gt;&gt;</code>
+      in <code class="literal">boost::large_int::large_int</code> are both implemented via
+      <code class="literal">boost::large_int::large_int_shift</code>, use of this class is
+      optional. Where left or right shifting by a single bit is needed, the single-argument
+      versions of <code class="literal">large_int_shift::left</code> and <code class="literal">large_int_shift::right</code>
+      may yield better performance.
+    </p>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="boost_largeint.shift.usage_example"></a><a class="link" href="shift.html#boost_largeint.shift.usage_example" title="Usage Example">Usage Example</a>
+</h3></div></div></div>
+<p>
+</p>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">iostream</span><span class="special">&gt;</span> <span class="comment">// For std::cout, std::endl</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">cstdint</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span> <span class="comment">// For uint64_t, int8_t</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">large_int</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span> <span class="comment">// For boost::large_int::large_int,</span>
+                               <span class="comment">//     boost::large_int::large_int_shift</span>
+<span class="keyword">void</span> <span class="identifier">example</span><span class="special">()</span>
+<span class="special">{</span>
+    <span class="comment">// Left and right shift a 72bit large_int value</span>
+    <span class="keyword">typedef</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">large_int</span><span class="special">::</span><span class="identifier">large_int</span><span class="special">&lt;</span><span class="identifier">uint64_t</span><span class="special">,</span> <span class="identifier">int8_t</span><span class="special">&gt;</span> <span class="identifier">lint72_t</span><span class="special">;</span>
+    <span class="keyword">typedef</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">large_int</span><span class="special">::</span><span class="identifier">large_int_shift</span><span class="special">&lt;</span><span class="identifier">lint72_t</span><span class="special">&gt;</span> <span class="identifier">shift_type</span><span class="special">;</span>
+
+    <span class="identifier">lint72_t</span> <span class="identifier">val</span><span class="special">(</span><span class="number">4096</span><span class="special">);</span>
+    <span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="identifier">val</span> <span class="special">&lt;&lt;</span> <span class="string">" &lt;&lt; 1 == "</span> <span class="special">&lt;&lt;</span> <span class="identifier">shift_type</span><span class="special">::</span><span class="identifier">left</span><span class="special">(</span><span class="identifier">val</span><span class="special">)</span> <span class="special">&lt;&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">endl</span>
+              <span class="special">&lt;&lt;</span> <span class="identifier">val</span> <span class="special">&lt;&lt;</span> <span class="string">" &gt;&gt; 1 == "</span> <span class="special">&lt;&lt;</span> <span class="identifier">shift_type</span><span class="special">::</span><span class="identifier">right</span><span class="special">(</span><span class="identifier">val</span><span class="special">)</span> <span class="special">&lt;&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">endl</span>
+              <span class="special">&lt;&lt;</span> <span class="identifier">val</span> <span class="special">&lt;&lt;</span> <span class="string">" &lt;&lt; 2 == "</span> <span class="special">&lt;&lt;</span> <span class="identifier">shift_type</span><span class="special">::</span><span class="identifier">left</span><span class="special">(</span><span class="identifier">val</span><span class="special">,</span> <span class="number">2</span><span class="special">)</span> <span class="special">&lt;&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">endl</span>
+              <span class="special">&lt;&lt;</span> <span class="identifier">val</span> <span class="special">&lt;&lt;</span> <span class="string">" &gt;&gt; 2 == "</span> <span class="special">&lt;&lt;</span> <span class="identifier">shift_type</span><span class="special">::</span><span class="identifier">right</span><span class="special">(</span><span class="identifier">val</span><span class="special">,</span> <span class="number">2</span><span class="special">)</span> <span class="special">&lt;&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">endl</span>
+              <span class="special">&lt;&lt;</span> <span class="identifier">val</span> <span class="special">&lt;&lt;</span> <span class="string">" &lt;&lt; 4 == "</span> <span class="special">&lt;&lt;</span> <span class="identifier">shift_type</span><span class="special">::</span><span class="identifier">left</span><span class="special">(</span><span class="identifier">val</span><span class="special">,</span> <span class="number">4</span><span class="special">)</span> <span class="special">&lt;&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">endl</span>
+              <span class="special">&lt;&lt;</span> <span class="identifier">val</span> <span class="special">&lt;&lt;</span> <span class="string">" &gt;&gt; 4 == "</span> <span class="special">&lt;&lt;</span> <span class="identifier">shift_type</span><span class="special">::</span><span class="identifier">right</span><span class="special">(</span><span class="identifier">val</span><span class="special">,</span> <span class="number">4</span><span class="special">)</span> <span class="special">&lt;&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">endl</span><span class="special">;</span>
+<span class="special">}</span>
+</pre>
+<p>
+      </p>
+</div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2012 Michael J. Tryhorn<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="traits.html"><img src="../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="utils.html"><img src="../../../../../doc/src/images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

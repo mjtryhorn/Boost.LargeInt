@@ -21,6 +21,7 @@
 #include <boost/throw_exception.hpp> // For BOOST_THROW_EXCEPTION
 #include <boost/large_int/base.hpp> // For large_int
 #include <boost/large_int/traits.hpp> // For large_int_traits
+#include <boost/large_int/shift.hpp> // For large_int_shift
 #include <boost/large_int/utils.hpp> // For abs
 
 namespace boost {
@@ -82,9 +83,9 @@ namespace detail
         // Perform the division
         for( int i = value_type::bits; i != 0; --i )
         {
-            result.rem  <<= 1;
-            result.rem   |= (result.quot >> (value_type::bits - 1)) & one;
-            result.quot <<= 1;
+            result.rem  = large_int_shift<value_type>::left(result.rem);
+            result.rem |= (result.quot >> (value_type::bits - 1)) & one;
+            result.quot = large_int_shift<value_type>::left(result.quot);
 
             if( is_quot_neg | is_rem_neg )
             {

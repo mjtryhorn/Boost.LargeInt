@@ -69,6 +69,12 @@ for 128bit integer support only, feel free to skip to the
       all [^boost::large_int::large_int] types.]
   ]
   [
+      [[link boost_largeint.shift Large Integer Shift]]
+      [[^[@../../../../boost/large_int/shift.hpp <boost/large_int/shift.hpp>]]]
+      [Class template [^boost::large_int::large_int_shift], including static
+      methods for the bitwise left and right shifting for large_int values.]
+  ]
+  [
       [[link boost_largeint.traits Large Integer Traits]]
       [[^[@../../../../boost/large_int/traits.hpp <boost/large_int/traits.hpp>]]]
       [Class template [^boost::large_int::large_int_traits], including static
@@ -894,6 +900,61 @@ void example()
 [endsect] [/ section Usage Example]
 
 [endsect] [/ section:traits Large Integer Traits]
+
+
+[section:shift Large Integer Shift]
+To support fast left and right shifting, Boost.LargeInt defines the class
+template [^boost::large_int::large_int_shift].  This is fully defined for all
+[^large_int] and ['integer-like] types.
+
+```
+namespace boost {
+namespace large_int {
+
+template<class T> struct large_int_shift
+{
+    // Utilities --
+    static T left(const T& val); // Left-shift-by-one
+    static T right(const T& val); // Right-shift-by-one
+    static T left(const T& val, int bits);
+    static T right(const T& val, int bits);
+};
+
+} // namespace large_int
+} // namespace boost
+```
+
+As [^operator<<] and [^operator>>] in [^boost::large_int::large_int]
+are both implemented via [^boost::large_int::large_int_shift], use of this
+class is optional.  Where left or right shifting by a single bit is needed,
+the single-argument versions of [^large_int_shift::left] and
+[^large_int_shift::right] may yield better performance.
+
+[section Usage Example]
+```
+#include <iostream> // For std::cout, std::endl
+#include <boost/cstdint.hpp> // For uint64_t, int8_t
+#include <boost/large_int.hpp> // For boost::large_int::large_int,
+                               //     boost::large_int::large_int_shift
+void example()
+{
+    // Left and right shift a 72bit large_int value
+    typedef boost::large_int::large_int<uint64_t, int8_t> lint72_t;
+    typedef boost::large_int::large_int_shift<lint72_t> shift_type;
+
+    lint72_t val(4096);
+    std::cout << val << " << 1 == " << shift_type::left(val) << std::endl
+              << val << " >> 1 == " << shift_type::right(val) << std::endl
+              << val << " << 2 == " << shift_type::left(val, 2) << std::endl
+              << val << " >> 2 == " << shift_type::right(val, 2) << std::endl
+              << val << " << 4 == " << shift_type::left(val, 4) << std::endl
+              << val << " >> 4 == " << shift_type::right(val, 4) << std::endl;
+}
+```
+
+[endsect] [/ section Usage Example]
+
+[endsect] [/ section:shift Large Integer Shift]
 
 
 [section:utils Large Integer Utils]

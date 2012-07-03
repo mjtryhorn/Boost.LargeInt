@@ -124,6 +124,7 @@ private:
     // Friends --
     template<class V> friend class detail::large_int_cast_t;
     friend class detail::large_int_traits_internal_t;
+    friend class detail::large_int_shift_internal_t;
     friend class detail::large_int_div_internal_t;
 
 public:

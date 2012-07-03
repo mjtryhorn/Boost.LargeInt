@@ -26,12 +26,14 @@ namespace detail
     // Private types --
     template<class T> class large_int_cast_t;
     class large_int_traits_internal_t;
+    class large_int_shift_internal_t;
     class large_int_div_internal_t;
 } // namespace detail
 
 // Types --
 template<class T, class U> class large_int;
 template<class T> struct large_int_traits;
+template<class T> struct large_int_shift;
 template<class T> struct large_int_div_t;
 
 // Mathematical functions --

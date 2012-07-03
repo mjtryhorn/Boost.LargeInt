@@ -26,6 +26,7 @@
 #include <boost/large_int/div.hpp>
 #include <boost/large_int/limits.hpp>
 #include <boost/large_int/traits.hpp>
+#include <boost/large_int/shift.hpp>
 #include <boost/large_int/utils.hpp>
 #include <boost/large_int/def.hpp>
 #include <boost/large_int/version.hpp>

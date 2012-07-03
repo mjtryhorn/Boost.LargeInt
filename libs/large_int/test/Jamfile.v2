@@ -18,6 +18,7 @@ test-suite large_int
     :
         [ do-test large_int_test_limits ]
         [ do-test large_int_test_traits ]
+        [ do-test large_int_test_shift ]
         [ do-test large_int_test_cast ]
         [ do-test large_int_test_div ]
         [ do-test large_int_test_base ]
