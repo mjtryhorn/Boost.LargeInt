@@ -19,7 +19,7 @@ BOOST_AUTO_TEST_CASE( large_int_version )
     // This test will need to be updated whenever
     // the version of Boost.LargeInt changes
     BOOST_REQUIRE(BOOST_IS_DEFINED(BOOST_LARGE_INT_VERSION));
-    BOOST_CHECK((BOOST_LARGE_INT_VERSION % 100) == 0); // Revision
+    BOOST_CHECK((BOOST_LARGE_INT_VERSION % 100) == 1); // Revision
     BOOST_CHECK((BOOST_LARGE_INT_VERSION / 100 % 1000) == 1); // Minor
     BOOST_CHECK((BOOST_LARGE_INT_VERSION / 100000) == 1); // Major
 }
