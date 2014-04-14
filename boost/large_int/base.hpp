@@ -60,7 +60,6 @@ private:
     // Type 'U' (high_part_type) must be a signed or unsigned integral type --
     BOOST_STATIC_ASSERT((boost::type_traits::ice_and<
         std::numeric_limits<U>::is_exact,
-        std::numeric_limits<U>::is_modulo,
         std::numeric_limits<U>::is_bounded,
         std::numeric_limits<U>::is_integer,
         boost::type_traits::ice_eq<std::numeric_limits<U>::radix, 2>::value>

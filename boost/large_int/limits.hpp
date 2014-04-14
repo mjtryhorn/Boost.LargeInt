@@ -100,7 +100,7 @@ public:
 
     BOOST_STATIC_CONSTANT(bool, is_iec559 = false);
     BOOST_STATIC_CONSTANT(bool, is_bounded = true);
-    BOOST_STATIC_CONSTANT(bool, is_modulo = true);
+    BOOST_STATIC_CONSTANT(bool, is_modulo = numeric_limits<U>::is_modulo);
     BOOST_STATIC_CONSTANT(bool, traps = numeric_limits<T>::traps);
     BOOST_STATIC_CONSTANT(bool, tinyness_before = false);
     BOOST_STATIC_CONSTANT(float_round_style, round_style = round_toward_zero);
