@@ -36,6 +36,8 @@ BOOST_AUTO_TEST_CASE( large_int_utils )
     const std::wstring test_wnum_str(L"456");
     const std::string test_base2_str("11001010");
     const std::string test_base3_str("11002012");
+    const std::string test_base8_str("0567");
+    const std::string test_base16_str("0ABC");
 
     // Check 'abs' for large_ints
     BOOST_CHECK_EQUAL(abs(test_int16_t(0)), 0);
@@ -99,6 +101,8 @@ BOOST_AUTO_TEST_CASE( large_int_utils )
         test_num_str.end(), 8, result_16) == test_num_str.end());
     BOOST_CHECK_EQUAL((make_large_int(test_num_str.begin(),
         test_num_str.end(), 8, result_16), result_16), int16_t(0123));
+    BOOST_CHECK_EQUAL((make_large_int(test_base8_str.begin(),
+        test_base8_str.end(), 8, result_16), result_16), int16_t(0567));
 
     // [check make_large_int for hexadecimal input (base 16)]
     BOOST_CHECK_EQUAL((make_large_int<test_int16_t>(
@@ -109,6 +113,8 @@ BOOST_AUTO_TEST_CASE( large_int_utils )
         test_num_str.end(), 16, result_16) == test_num_str.end());
     BOOST_CHECK_EQUAL((make_large_int(test_num_str.begin(),
         test_num_str.end(), 16, result_16), result_16), int16_t(0x123));
+    BOOST_CHECK_EQUAL((make_large_int(test_base16_str.begin(),
+        test_base16_str.end(), 16, result_16), result_16), int16_t(0xABC));
 
     // [check make_large_int for input of a non-standard base (binary, ternary)]
     BOOST_CHECK_EQUAL((make_large_int(test_base2_str.begin(),

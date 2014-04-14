@@ -88,13 +88,19 @@ InputIterator make_large_int(InputIterator first,
                 if( first != last && (*first == 'x' || *first == 'X') )
                 {
                     // Hexadecimal number
-                    base = 16;
+                    if( base == 0 )
+                    {
+                        base = 16;
+                    }
                     ++first;
                 }
                 else
                 {
                     // Octal number (or zero)
-                    base = 8;
+                    if( base == 0 )
+                    {
+                        base = 8;
+                    }
                     valid = true;
                 }
                 break;

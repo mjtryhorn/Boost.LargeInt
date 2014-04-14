@@ -38,8 +38,8 @@ BOOST_AUTO_TEST_CASE( large_int_io )
     BOOST_CHECK_EQUAL((iss.str("77"), iss >> std::oct >> result_16, result_16), 077);
     BOOST_CHECK_EQUAL((iss.str("ab"), iss >> std::hex >> result_16, result_16), 0xab);
     BOOST_CHECK_EQUAL((iss.str("AB"), iss >> std::hex >> result_16, result_16), 0xab);
-    BOOST_CHECK_EQUAL((iss.str("077"), iss >> result_16, result_16), 077);
-    BOOST_CHECK_EQUAL((iss.str("0xa"), iss >> result_16, result_16), 0xa);
+    BOOST_CHECK_EQUAL((iss.str("077"), iss >> std::oct >> result_16, result_16), 077);
+    BOOST_CHECK_EQUAL((iss.str("0xa"), iss >> std::hex >> result_16, result_16), 0xa);
     BOOST_CHECK((iss.str(""), iss >> result_16, iss.fail()));
     iss.clear();
 
