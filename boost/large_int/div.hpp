@@ -135,8 +135,8 @@ template<class T, class U> struct large_int_div_t<large_int<T, U> >
 
     // Constructor --
     explicit large_int_div_t(
-        const large_int<T, U>& quot_in = large_int<T, U>(),
-        const large_int<T, U>& rem_in = large_int<T, U>())
+        const large_int<T, U>& quot_in = (large_int<T, U>()),
+        const large_int<T, U>& rem_in = (large_int<T, U>()))
         : quot(quot_in), rem(rem_in) { }
 };
 
